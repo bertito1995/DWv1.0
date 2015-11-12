@@ -25,7 +25,6 @@ public:
 	Vec2 pos;
 	int velocidad;
 
-	bool TodoCorrecto;
 };
 
 #endif
