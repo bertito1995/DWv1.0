@@ -18,7 +18,8 @@ public:
     static cocos2d::Scene* createScene();
 	
 	Sprite *princesa;
-	Enemigo *enemigoBasico;
+	Enemigo **enemigos;
+	Sprite **imagenEnemigos;
 
 	EventKeyboard::KeyCode teclaPresioanda;
 	bool prinMovL;

@@ -39,20 +39,26 @@ bool PlataformasScene::init()
 
 	princesa->setPhysicsBody(cuerpo);
 
-	//Creamos enemigo
+	//Creamos enemigo y su imagen, y los añadimos al vector
+	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
 
-	Enemigo *enemigoBasico = Enemigo::create();
-	Sprite *imagenEn = Sprite::create("provisional/enemigo.png");
-	enemigoBasico->imagen = imagenEn;
-	//enemigoBasico->setImagen(imagenEn);
-	//addChild(enemigoBasico->imagen, 1);
-	
-	enemigoBasico->setScaleX(0.15f);
-	enemigoBasico->setScaleY(0.15f);
-	enemigoBasico->setPosition(Point(enemigoBasico->getContentSize().width / 2 * enemigoBasico->getScaleX(), 40));
-	enemigoBasico->tipo = "basico";
+	enemigos = new Enemigo*[1];
+	imagenEnemigos = new Sprite*[1];
 
-	addChild(enemigoBasico->imagen, 1);
+	Enemigo *enemigoBasico = new Enemigo(1);
+	enemigos[0] = enemigoBasico;
+	Sprite *imagenEn = Sprite::create(enemigoBasico->imagen);
+	imagenEnemigos[0] = imagenEn;
+
+	//Modificamos la imagen
+
+	imagenEnemigos[0]->setScaleX(0.15f);
+	imagenEnemigos[0]->setScaleY(0.15f);
+	imagenEnemigos[0]->setPosition(Point(imagenEnemigos[0]->getContentSize().width / 2 * imagenEnemigos[0]->getScaleX(), 40));
+
+	//Añadimos los enemigos a la escena
+	for (int i = 0; i < 1; i++)
+		addChild(imagenEnemigos[i], 1);
 
 	//Teclas
 
@@ -126,6 +132,18 @@ void PlataformasScene::update(float dt){
 	auto cuerpo = PhysicsBody::createCircle(princesa->getBoundingBox().size.width / 2);
 
 	//Movimiento enemigo
+	for (int i = 0; i<1; i++)
+	{
+		enemigos[i]->mover(imagenEnemigos[i]);
+
+		if (enemigos[i]->derecha && imagenEnemigos[i]->getPositionX() >
+			tamañoPantalla.width - imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
+			enemigos[i]->derecha = false;
+
+		if (enemigos[i]->derecha == false && imagenEnemigos[i]->getPositionX() <
+			imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
+			enemigos[i]->derecha = true;
+	}
 
 	//Movimiento en X
 	if (prinMovL)

@@ -6,23 +6,17 @@
 
 USING_NS_CC;
 
-class Enemigo : public cocos2d::Layer
+class Enemigo
 {
 public:
-	
-	virtual bool init();
-	CREATE_FUNC(Enemigo);
 
-	void setTipo(String tipo);
-	void setImagen(Sprite *imagen);
-	void setDerecha(bool derecha);
-	Vec2 getPos();
-	void mover();
+	Enemigo();
+	Enemigo(int);
+	void mover(Sprite *);
 
-	Sprite *imagen;
-	String tipo;
+	char *imagen;
+	char *tipoMovimiento;
 	bool derecha;
-	Vec2 pos;
 	int velocidad;
 
 };
