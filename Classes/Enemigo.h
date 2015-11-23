@@ -16,7 +16,7 @@ public:
 
 	char *imagen;
 	char *tipoMovimiento;
-	bool derecha;
+	int faseMov;
 	int velocidad;
 
 };

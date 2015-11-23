@@ -19,9 +19,29 @@ bool PlataformasScene::init()
 	if ( !Layer::init() )
         return false;
 
+	correrPrincesaR = Vector <Sprite*>();
+	correrPrincesaL = Vector <Sprite*>();
+	for (int i = 0; i < FRAMESCORRER; i++){
+		string texto = "imagenes/princesa/animacionCorrerR/";
+		texto += to_string(i+1);
+		texto = texto + ".png";
+		Sprite *aux = Sprite::create(texto);
+		aux->setScaleX(0.07f);
+		aux->setScaleY(0.07f);
+		correrPrincesaR.pushBack(aux);
+		
+		string texto2 = "imagenes/princesa/animacionCorrerL/";
+		texto2 += to_string(i + 1);
+		texto2 = texto2 + ".png";
+		Sprite *aux2 = Sprite::create(texto2);
+		aux2->setScaleX(0.07f);
+		aux2->setScaleY(0.07f);
+		correrPrincesaL.pushBack(aux2);
+	}
+
 	//Creamos la princesa
 
-	princesa = Sprite::create("imagenes/princesa/1.png");
+	princesa = Sprite::create("imagenes/princesa/animacionCorrerR/1.png");
 	princesa->setScaleX(0.07f);
 	princesa->setScaleY(0.07f);
 	princesa->setPosition(Point(tamañoPantalla.width / 2, 70));
@@ -42,22 +62,31 @@ bool PlataformasScene::init()
 	//Creamos enemigo y su imagen, y los añadimos al vector
 	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
 
-	enemigos = new Enemigo*[1];
-	imagenEnemigos = new Sprite*[1];
+	enemigos = new Enemigo*[2];
+	imagenEnemigos = new Sprite*[2];
 
 	Enemigo *enemigoBasico = new Enemigo(1);
 	enemigos[0] = enemigoBasico;
+	Enemigo *enemigoVertical = new Enemigo(2);
+	enemigos[1] = enemigoVertical;
+	
 	Sprite *imagenEn = Sprite::create(enemigoBasico->imagen);
 	imagenEnemigos[0] = imagenEn;
+	Sprite *imagenEnVertical = Sprite::create(enemigoVertical->imagen);
+	imagenEnemigos[1] = imagenEnVertical;
 
 	//Modificamos la imagen
 
-	imagenEnemigos[0]->setScaleX(0.15f);
-	imagenEnemigos[0]->setScaleY(0.15f);
+	for (int i = 0; i < 2; i++)
+	{
+		imagenEnemigos[i]->setScaleX(0.15f);
+		imagenEnemigos[i]->setScaleY(0.15f);
+	}
 	imagenEnemigos[0]->setPosition(Point(imagenEnemigos[0]->getContentSize().width / 2 * imagenEnemigos[0]->getScaleX(), 40));
+	imagenEnemigos[1]->setPosition(Point(imagenEnemigos[1]->getContentSize().width / 2 * imagenEnemigos[1]->getScaleX() + 500, 250));
 
 	//Añadimos los enemigos a la escena
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 		addChild(imagenEnemigos[i], 1);
 
 	//Teclas
@@ -74,6 +103,50 @@ bool PlataformasScene::init()
 	prinPos.x = princesa->getPositionX();
 	prinPos.y = princesa->getPositionY();
 
+	//imagen fondo
+
+	/*matriz = new (Sprite**)[4];
+
+	for (int i = 0; i < 4; i++)
+	{
+		matriz[i] = new (Sprite*)[6];
+		for (int j = 0; j < 6; j++)
+			matriz[i][j] = Sprite::create("imagenes/princesa/1.png");
+	}
+
+
+	matriz[0][0] = Sprite::create("provisional/fondo/0,0.png");
+	matriz[0][1] = Sprite::create("provisional/fondo/0,1.png");
+	matriz[0][2] = Sprite::create("provisional/fondo/0,2.png");
+	matriz[0][3] = Sprite::create("provisional / fondo/ 0,3.png");
+	matriz[0][4] = Sprite::create("provisional / fondo/ 0,4.png");
+	matriz[0][5] = Sprite::create("provisional / fondo/ 0,5.png");
+	matriz[1][0] = Sprite::create("provisional / fondo/ 1,0.png");
+	matriz[1][1] = Sprite::create("provisional / fondo/ 1,1.png");
+	matriz[1][2] = Sprite::create("provisional / fondo/ 1,2.png");
+	matriz[1][3] = Sprite::create("provisional / fondo/ 1,3.png");
+	matriz[1][4] = Sprite::create("provisional / fondo/ 1,4.png");
+	matriz[1][5] = Sprite::create("provisional / fondo/ 1,5.png");
+	matriz[2][0] = Sprite::create("provisional / fondo/ 2,0.png");
+	matriz[2][1] = Sprite::create("provisional / fondo/ 2,1.png");
+	matriz[2][2] = Sprite::create("provisional / fondo/ 2,2.png");
+	matriz[2][3] = Sprite::create("provisional / fondo/ 2,3.png");
+	matriz[2][4] = Sprite::create("provisional / fondo/ 2,4.png");
+	matriz[2][5] = Sprite::create("provisional / fondo/ 2,5.png");
+	matriz[3][0] = Sprite::create("provisional / fondo/ 3,0.png");
+	matriz[3][1] = Sprite::create("provisional / fondo/ 3,1.png");
+	matriz[3][2] = Sprite::create("provisional / fondo/ 3,2.png");
+	matriz[3][3] = Sprite::create("provisional / fondo/ 3,3.png");
+	matriz[3][4] = Sprite::create("provisional / fondo/ 3,4.png");
+	matriz[3][5] = Sprite::create("provisional / fondo/ 3,5.png");
+
+	//ordenar(matriz);
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 6; j++)
+			addChild(matriz[i][j], 0);
+	}*/
 
     return true;
 }
@@ -86,7 +159,7 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 		prinPos.x -= VELOCIDADPRIN;
 		prinMovL = true;
 		if (prinDerecha){
-			princesa->setTexture(CCTextureCache::sharedTextureCache()->addImage("imagenes/princesa/2.png"));
+			princesa->setTexture(CCTextureCache::sharedTextureCache()->addImage("imagenes/princesa/animacionCorrerL/1.png"));
 			prinDerecha = false;
 		}
 	}
@@ -95,7 +168,7 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 		prinPos.x += VELOCIDADPRIN;
 		prinMovR = true;
 		if (prinDerecha == false){
-			princesa->setTexture(CCTextureCache::sharedTextureCache()->addImage("imagenes/princesa/1.png"));
+			princesa->setTexture(CCTextureCache::sharedTextureCache()->addImage("imagenes/princesa/animacionCorrerR/1.png"));
 			prinDerecha = true;
 		}
 	}
@@ -114,12 +187,16 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 
 void PlataformasScene::teclaLevantada(EventKeyboard::KeyCode idTecla, Event *evento){
 	if (idTecla == EventKeyboard::KeyCode::KEY_LEFT_ARROW) {
-		if (prinMovL)
+		if (prinMovL){
 			prinMovL = false;
+			princesa->setTexture(correrPrincesaL.at(0)->getTexture());
+		}
 	}
 	if (idTecla == EventKeyboard::KeyCode::KEY_RIGHT_ARROW){
-		if (prinMovR)
+		if (prinMovR){
 			prinMovR = false;
+			princesa->setTexture(correrPrincesaR.at(0)->getTexture());
+		}
 	}
 }
 
@@ -131,18 +208,61 @@ void PlataformasScene::update(float dt){
 
 	auto cuerpo = PhysicsBody::createCircle(princesa->getBoundingBox().size.width / 2);
 
+	contadoCorrer += dt;
+
+	//Animacion princesa
+	if (contadoCorrer > FRCORRER && prinMovR){
+		princesa->setTexture(correrPrincesaR.at(indiceCorrer)->getTexture());
+		contadoCorrer = 0;
+		indiceCorrer++;
+		if (indiceCorrer == FRAMESCORRER)
+			indiceCorrer = 0;
+	}
+	if (contadoCorrer > FRCORRER && prinMovL){
+		princesa->setTexture(correrPrincesaL.at(indiceCorrer)->getTexture());
+		contadoCorrer = 0;
+		indiceCorrer++;
+		if (indiceCorrer == FRAMESCORRER)
+			indiceCorrer = 0;
+	}
+	/*if (prinMovL == false){
+		indiceCorrer = 0;
+		princesa->setTexture(correrPrincesaR.at(indiceCorrer)->getTexture());
+	}
+	if (prinMovR == false){
+		indiceCorrer = 0;
+		princesa->setTexture(correrPrincesaL.at(indiceCorrer)->getTexture());
+	}*/
+		
+
 	//Movimiento enemigo
-	for (int i = 0; i<1; i++)
+	for (int i = 0; i<2; i++)
 	{
+
 		enemigos[i]->mover(imagenEnemigos[i]);
+		
+		if (enemigos[i]->tipoMovimiento == "basico")
+		{
 
-		if (enemigos[i]->derecha && imagenEnemigos[i]->getPositionX() >
-			tamañoPantalla.width - imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
-			enemigos[i]->derecha = false;
+			if (enemigos[i]->faseMov == 1 && imagenEnemigos[i]->getPositionX() >
+				tamañoPantalla.width - imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
+				enemigos[i]->faseMov = 2;
 
-		if (enemigos[i]->derecha == false && imagenEnemigos[i]->getPositionX() <
-			imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
-			enemigos[i]->derecha = true;
+			if (enemigos[i]->faseMov == 2 && imagenEnemigos[i]->getPositionX() <
+				imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
+				enemigos[i]->faseMov = 1;
+		}
+
+		if (enemigos[i]->tipoMovimiento == "vertical")
+		{
+			if (imagenEnemigos[i]->getPositionX() + imagenEnemigos[i]->getContentSize().width / 2 + 20 > prinPos.x &&
+				imagenEnemigos[i]->getPositionX() - imagenEnemigos[i]->getContentSize().width / 2 - 20 < prinPos.x && 
+				enemigos[i]->faseMov == 1)
+				enemigos[i]->faseMov = 2;
+
+			if (imagenEnemigos[i]->getPositionY() <= 40 && enemigos[i]->faseMov == 2)
+				enemigos[i]->faseMov = 3;
+		}
 	}
 
 	//Movimiento en X
@@ -170,6 +290,24 @@ void PlataformasScene::update(float dt){
 void PlataformasScene::setPhysicsWorld(PhysicsWorld *mundo) {
 	fMundo = mundo;
 	fMundo->setGravity(Vec2(0, FGRAVEDAD));
+}
+
+//Ordenamos la matriz
+
+void PlataformasScene::ordenar(Sprite ***matriz)
+{
+	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
+	float disx = tamañoPantalla.width / 6;
+	float disy = tamañoPantalla.height / 4;
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			matriz[i][j]->setPositionX(disx * (5 - j));
+			matriz[i][j]->setPositionY(disy * (5 - i));
+		}
+	}
 }
 
 void PlataformasScene::menuCloseCallback(Ref* pSender)
