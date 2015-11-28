@@ -5,9 +5,8 @@ USING_NS_CC;
 
 Scene* PlataformasScene::createScene()
 {
-	auto scene = Scene::createWithPhysics();
+	auto scene = Scene::create();
 	auto layer = PlataformasScene::create();
-	layer->setPhysicsWorld(scene->getPhysicsWorld());
     scene->addChild(layer);
     return scene;
 }
@@ -18,6 +17,31 @@ bool PlataformasScene::init()
 	
 	if ( !Layer::init() )
         return false;
+
+	//plataformas
+
+	Sprite * a = Sprite::create("provisional/princesa.png");
+	a->setScaleY(0.03);
+	a->setPosition(Point(tamañoPantalla.width / 2, 80));
+	plataformas = Vector <Sprite*>();
+	plataformas.pushBack(a);
+	for (int i = 0; i < plataformas.size(); i++){
+		addChild(plataformas.at(i),1);
+	}
+
+	//princesa
+
+	princesa = Sprite::create("imagenes/princesa/animacionCorrerR/1.png");
+	princesa->setScaleX(0.07f);
+	princesa->setScaleY(0.07f);
+	princesa->setPosition(Point(tamañoPantalla.width / 2, 150));
+	addChild(princesa, 1);
+
+	prinDerecha = true;
+
+	this->scheduleUpdate();
+	
+	//imagenes correr princesa
 
 	correrPrincesaR = Vector <Sprite*>();
 	correrPrincesaL = Vector <Sprite*>();
@@ -39,25 +63,7 @@ bool PlataformasScene::init()
 		correrPrincesaL.pushBack(aux2);
 	}
 
-	//Creamos la princesa
 
-	princesa = Sprite::create("imagenes/princesa/animacionCorrerR/1.png");
-	princesa->setScaleX(0.07f);
-	princesa->setScaleY(0.07f);
-	princesa->setPosition(Point(tamañoPantalla.width / 2, 70));
-	addChild(princesa, 1);
-
-	prinDerecha = true;
-	
-	this->scheduleUpdate();
-
-	//Asignamos fisicas a la princesa
-
-	auto cuerpo = PhysicsBody::createCircle(princesa->getBoundingBox().size.width / 2);
-	cuerpo->setContactTestBitmask(true);
-	cuerpo->setDynamic(true);
-
-	princesa->setPhysicsBody(cuerpo);
 
 	//Creamos enemigo y su imagen, y los añadimos al vector
 	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
@@ -82,7 +88,7 @@ bool PlataformasScene::init()
 		imagenEnemigos[i]->setScaleX(0.15f);
 		imagenEnemigos[i]->setScaleY(0.15f);
 	}
-	imagenEnemigos[0]->setPosition(Point(imagenEnemigos[0]->getContentSize().width / 2 * imagenEnemigos[0]->getScaleX(), 40));
+	imagenEnemigos[0]->setPosition(Point(imagenEnemigos[0]->getContentSize().width / 2 * imagenEnemigos[0]->getScaleX(), 25));
 	imagenEnemigos[1]->setPosition(Point(imagenEnemigos[1]->getContentSize().width / 2 * imagenEnemigos[1]->getScaleX() + 500, 250));
 
 	//Añadimos los enemigos a la escena
@@ -100,53 +106,13 @@ bool PlataformasScene::init()
 	prinMovL = false;
 	prinMovR = false;
 	prinSalto = false;
+	prinCae = false;
+	prinMovSalto = false;
 	prinPos.x = princesa->getPositionX();
 	prinPos.y = princesa->getPositionY();
+	prinPosAnt.x = princesa->getPositionX();
+	prinPosAnt.y = princesa->getPositionY();
 
-	//imagen fondo
-
-	/*matriz = new (Sprite**)[4];
-
-	for (int i = 0; i < 4; i++)
-	{
-		matriz[i] = new (Sprite*)[6];
-		for (int j = 0; j < 6; j++)
-			matriz[i][j] = Sprite::create("imagenes/princesa/1.png");
-	}
-
-
-	matriz[0][0] = Sprite::create("provisional/fondo/0,0.png");
-	matriz[0][1] = Sprite::create("provisional/fondo/0,1.png");
-	matriz[0][2] = Sprite::create("provisional/fondo/0,2.png");
-	matriz[0][3] = Sprite::create("provisional / fondo/ 0,3.png");
-	matriz[0][4] = Sprite::create("provisional / fondo/ 0,4.png");
-	matriz[0][5] = Sprite::create("provisional / fondo/ 0,5.png");
-	matriz[1][0] = Sprite::create("provisional / fondo/ 1,0.png");
-	matriz[1][1] = Sprite::create("provisional / fondo/ 1,1.png");
-	matriz[1][2] = Sprite::create("provisional / fondo/ 1,2.png");
-	matriz[1][3] = Sprite::create("provisional / fondo/ 1,3.png");
-	matriz[1][4] = Sprite::create("provisional / fondo/ 1,4.png");
-	matriz[1][5] = Sprite::create("provisional / fondo/ 1,5.png");
-	matriz[2][0] = Sprite::create("provisional / fondo/ 2,0.png");
-	matriz[2][1] = Sprite::create("provisional / fondo/ 2,1.png");
-	matriz[2][2] = Sprite::create("provisional / fondo/ 2,2.png");
-	matriz[2][3] = Sprite::create("provisional / fondo/ 2,3.png");
-	matriz[2][4] = Sprite::create("provisional / fondo/ 2,4.png");
-	matriz[2][5] = Sprite::create("provisional / fondo/ 2,5.png");
-	matriz[3][0] = Sprite::create("provisional / fondo/ 3,0.png");
-	matriz[3][1] = Sprite::create("provisional / fondo/ 3,1.png");
-	matriz[3][2] = Sprite::create("provisional / fondo/ 3,2.png");
-	matriz[3][3] = Sprite::create("provisional / fondo/ 3,3.png");
-	matriz[3][4] = Sprite::create("provisional / fondo/ 3,4.png");
-	matriz[3][5] = Sprite::create("provisional / fondo/ 3,5.png");
-
-	//ordenar(matriz);
-
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 6; j++)
-			addChild(matriz[i][j], 0);
-	}*/
 
     return true;
 }
@@ -156,6 +122,7 @@ bool PlataformasScene::init()
 void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *evento){
 
 	if (idTecla == EventKeyboard::KeyCode::KEY_LEFT_ARROW){
+		prinPosAnt.x = prinPos.x;
 		prinPos.x -= VELOCIDADPRIN;
 		prinMovL = true;
 		if (prinDerecha){
@@ -165,6 +132,7 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 	}
 
 	if (idTecla == EventKeyboard::KeyCode::KEY_RIGHT_ARROW){
+		prinPosAnt.x = prinPos.x;
 		prinPos.x += VELOCIDADPRIN;
 		prinMovR = true;
 		if (prinDerecha == false){
@@ -175,10 +143,10 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 
 	if (idTecla == EventKeyboard::KeyCode::KEY_SPACE){
 		if (prinSalto == false){
-			auto cuerpo = PhysicsBody::createCircle(princesa->getBoundingBox().size.width / 2);
-			cuerpo->applyImpulse(Vec2(0, FSALTOPRINCESA));
-			princesa->setPhysicsBody(cuerpo);
 			prinSalto = true;
+			prinMovSalto = true;
+			prinPosIniSalto = prinPos.y;
+			tiempoSalto = 0;
 		}
 	}
 }
@@ -206,36 +174,39 @@ void PlataformasScene::update(float dt){
 	
 	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
 
-	auto cuerpo = PhysicsBody::createCircle(princesa->getBoundingBox().size.width / 2);
+
+	//movimiento en y princesa
+	if (prinMovSalto){
+		tiempoSalto += dt;
+		prinPosAnt.y = prinPos.y;
+		prinPos.y = (FSALTOPRINCESA*tiempoSalto) - (0.5f * FGRAVEDAD*tiempoSalto*tiempoSalto) + prinPosIniSalto;
+		princesa->setPositionY(prinPos.y);
+		prinCae = false;
+		prinSalto = false;
+	}
+
+	//Animacion princesa
 
 	contadoCorrer += dt;
 
-	//Animacion princesa
-	if (contadoCorrer > FRCORRER && prinMovR){
+	if (contadoCorrer > FRCORRER && prinMovR && prinSalto == false){
 		princesa->setTexture(correrPrincesaR.at(indiceCorrer)->getTexture());
 		contadoCorrer = 0;
 		indiceCorrer++;
 		if (indiceCorrer == FRAMESCORRER)
 			indiceCorrer = 0;
 	}
-	if (contadoCorrer > FRCORRER && prinMovL){
+	if (contadoCorrer > FRCORRER && prinMovL && prinSalto == false){
 		princesa->setTexture(correrPrincesaL.at(indiceCorrer)->getTexture());
 		contadoCorrer = 0;
 		indiceCorrer++;
 		if (indiceCorrer == FRAMESCORRER)
 			indiceCorrer = 0;
 	}
-	/*if (prinMovL == false){
-		indiceCorrer = 0;
-		princesa->setTexture(correrPrincesaR.at(indiceCorrer)->getTexture());
-	}
-	if (prinMovR == false){
-		indiceCorrer = 0;
-		princesa->setTexture(correrPrincesaL.at(indiceCorrer)->getTexture());
-	}*/
 		
-
 	//Movimiento enemigo
+
+
 	for (int i = 0; i<2; i++)
 	{
 
@@ -265,11 +236,49 @@ void PlataformasScene::update(float dt){
 		}
 	}
 
-	//Movimiento en X
-	if (prinMovL)
+	//colision princesa/enemigos
+	/*for (int i = 0; i < 2; i++)
+		if (colision(imagenEnemigos[i], princesa))
+			reiniciarNivel(this);*/
+
+	//colision princesa/plataforma
+	for (int i = 0; i < plataformas.size(); i++){
+		if (colisionPlataformas(princesa)){
+			tiempoSalto = 0;
+			if (prinPosAnt.y - (princesa->getContentSize().height/2 * princesa->getScaleY()) > 
+				plataformas.at(i)->getPositionY() + (plataformas.at(i)->getContentSize().height/2 * plataformas.at(i)->getScaleY())){
+				prinSalto = false;
+				prinMovSalto = false;
+				prinCae = true;
+			}
+			else{
+				prinPos.x = prinPosAnt.x;
+				prinPos.y = prinPosAnt.y;
+				princesa->setPosition(Point(prinPosAnt.x, prinPosAnt.y));
+				prinMovL = false;
+				prinMovR = false;
+			}
+
+		}
+		else if (prinCae)
+		{
+			//Cae constante, mejor un contador propio
+			prinPosAnt.y = prinPos.y;
+			prinPos.y -= (0.5f * FGRAVEDAD*dt*dt*50);
+			princesa->setPositionY(prinPos.y);
+			prinSalto = true;
+		}
+	}
+
+	//Movimiento princesa en X
+	if (prinMovL){
+		prinPosAnt.x = prinPos.x;
 		prinPos.x -= VELOCIDADPRIN;
-	if (prinMovR)
+	}
+	if (prinMovR){
+		prinPosAnt.x = prinPos.x;
 		prinPos.x += VELOCIDADPRIN;
+	}
 
 	if (prinPos.x > princesa->getContentSize().width / 2 * princesa->getScaleX() 
 		&& prinPos.x < tamañoPantalla.width - princesa->getContentSize().width / 2 * princesa->getScaleX())
@@ -277,19 +286,6 @@ void PlataformasScene::update(float dt){
 	else
 		prinPos.x = princesa->getPositionX();
 		
-	//Plataforma princesa
-	if (princesa->getPositionY() < 70){
-		cuerpo->applyImpulse(Vec2(0, FFLOTAR));
-		princesa->setPhysicsBody(cuerpo);
-		prinSalto = false;	
-	}
-}
-
-//Asignamos fisica a la escena
-
-void PlataformasScene::setPhysicsWorld(PhysicsWorld *mundo) {
-	fMundo = mundo;
-	fMundo->setGravity(Vec2(0, FGRAVEDAD));
 }
 
 //Ordenamos la matriz
@@ -309,6 +305,25 @@ void PlataformasScene::ordenar(Sprite ***matriz)
 		}
 	}
 }
+//Colision
+
+bool PlataformasScene::colision(Sprite* a, Sprite* b) {
+	if (a->getPositionX() + ((a->getContentSize().width / 2) * a->getScaleX()) <
+		b->getPositionX() - ((b->getContentSize().width / 2) * b->getScaleX()) ||
+		a->getPositionX() - ((a->getContentSize().width / 2) * a->getScaleX()) >
+		b->getPositionX() + ((b->getContentSize().width / 2) * b->getScaleX()) ||
+		a->getPositionY() + ((a->getContentSize().height / 2) * a->getScaleY()) <
+		b->getPositionY() - ((b->getContentSize().height / 2) * b->getScaleY()) ||
+		a->getPositionY() - ((a->getContentSize().height / 2) * a->getScaleY()) >
+		b->getPositionY() + ((b->getContentSize().height / 2) * b->getScaleY()))
+		return false;
+	return true;
+}bool PlataformasScene::colisionPlataformas(Sprite* a) {	for (int i = 0; i < plataformas.size(); i++){		if (colision(plataformas.at(i), a))			return true;	}	return false;}void PlataformasScene::reiniciarNivel(Ref *pSender) {
+	auto scene = PlataformasScene::createScene();
+
+	//Director::getInstance()->popScene();
+	Director::getInstance()->replaceScene(scene);
+}
 
 void PlataformasScene::menuCloseCallback(Ref* pSender)
 {
