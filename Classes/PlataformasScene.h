@@ -4,6 +4,8 @@
 
 #include "cocos2d.h"
 #include "Enemigo.h"
+#include "Casilla.h"
+#include "Objeto.h"
 
 USING_NS_CC;
 using namespace std;
@@ -26,7 +28,13 @@ public:
 	Vector <Sprite*> correrPrincesaL;
 	Sprite *princesa;
 	Enemigo **enemigos;
-	Sprite **imagenEnemigos;
+	//Sprite **imagenEnemigos;
+
+	Casilla **casillas;
+	Sprite **imagenCasillas;
+	char **imagenprueba;
+
+	Objeto *objeto;
 
 	float contadoCorrer = 0;
 	int indiceCorrer = 1;

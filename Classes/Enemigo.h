@@ -16,6 +16,12 @@ public:
 
 	char *imagen;
 	char *tipoMovimiento;
+
+	Sprite *imagenEne;
+
+	float posX;
+	float posY;
+
 	int faseMov;
 	int velocidad;
 

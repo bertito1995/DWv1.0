@@ -1,5 +1,7 @@
 #include "PlataformasScene.h"
 #include "Enemigo.h"
+#include "Casilla.h"
+#include "Objeto.h"
 
 USING_NS_CC;
 
@@ -62,32 +64,87 @@ bool PlataformasScene::init()
 	//Creamos enemigo y su imagen, y los añadimos al vector
 	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
 
-	enemigos = new Enemigo*[2];
-	imagenEnemigos = new Sprite*[2];
+	//imagenEnemigos = new Sprite*[2];
+	/*enemigos = new Enemigo*[2];
+	
 
 	Enemigo *enemigoBasico = new Enemigo(1);
 	enemigos[0] = enemigoBasico;
 	Enemigo *enemigoVertical = new Enemigo(2);
-	enemigos[1] = enemigoVertical;
+	enemigos[1] = enemigoVertical;*/
 	
-	Sprite *imagenEn = Sprite::create(enemigoBasico->imagen);
+	/*Sprite *imagenEn = Sprite::create(enemigoBasico->imagen);
 	imagenEnemigos[0] = imagenEn;
 	Sprite *imagenEnVertical = Sprite::create(enemigoVertical->imagen);
-	imagenEnemigos[1] = imagenEnVertical;
+	imagenEnemigos[1] = imagenEnVertical;*/
 
 	//Modificamos la imagen
 
-	for (int i = 0; i < 2; i++)
+	/*for (int i = 0; i < 2; i++)
 	{
 		imagenEnemigos[i]->setScaleX(0.15f);
 		imagenEnemigos[i]->setScaleY(0.15f);
 	}
 	imagenEnemigos[0]->setPosition(Point(imagenEnemigos[0]->getContentSize().width / 2 * imagenEnemigos[0]->getScaleX(), 40));
-	imagenEnemigos[1]->setPosition(Point(imagenEnemigos[1]->getContentSize().width / 2 * imagenEnemigos[1]->getScaleX() + 500, 250));
+	imagenEnemigos[1]->setPosition(Point(imagenEnemigos[1]->getContentSize().width / 2 * imagenEnemigos[1]->getScaleX() + 500, 250));*/
 
 	//Añadimos los enemigos a la escena
-	for (int i = 0; i < 2; i++)
-		addChild(imagenEnemigos[i], 1);
+	/*for (int i = 0; i < 2; i++)
+		addChild(imagenEnemigos[i], 1);*/
+
+	
+
+
+	//Creamos casilla y su imagen, y los añadimos al vector
+	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
+
+	casillas = new Casilla*[24];
+	//casillas = new Casilla*[1];
+	
+
+	//Modificamos la imagen
+
+	for (int i = 0; i < 24; i++)
+	{
+		Casilla *cas = new Casilla(i+1);
+		casillas[i] = cas;
+		//Sprite *imagencas = Sprite::create(cas->imagenCasilla);
+
+		float columnaImg = (tamañoPantalla.width / 6)  * ((float)(i - ((i / 6) * 6)) + 0.5);
+		float filaImg = (tamañoPantalla.height / 4)  * ((float)(i / 6) + 0.5);
+
+
+		//imagenCasillas[i]->setContentSize(Size(tamañoPantalla.width/6, tamañoPantalla.height/4));
+		//Size img = cas->imagencas->getContentSize();
+		/*imagenCasillas[i]->setScaleX(tamañoPantalla.width / (6 * img.width));
+		imagenCasillas[i]->setScaleY(tamañoPantalla.height / (4 * img.height));*/
+		cas->imagencas->setPosition(Point (columnaImg, filaImg) );
+		//cas->imagencas->setPosition(Point((tamañoPantalla.width / 6)  *   (2 + 0.5), (tamañoPantalla.height / 4)  *  (1 + 0.5)));
+		addChild(cas->imagencas, 0);
+
+
+		//cas->setPosition(Point((tamañoPantalla.width / 6)  *   (2 + 0.5), (tamañoPantalla.height / 4)  *  (1 + 0.5)));
+		//cas->listaObjetos[0]->imagenobj->setPosition(Point((tamañoPantalla.width / 6)  *   (2 + 0.5) + (cas->listaObjetos[0]->posX)*img.width, (tamañoPantalla.height / 4)  *  (1 + 0.5) + (cas->listaObjetos[0]->posY)*img.height));
+		//cas->listaObjetos[0]->imagenobj->setPosition(Point((tamañoPantalla.width / 6)  * (2 + 0.5) + tamañoPantalla.width / 6 * cas->listaObjetos[0]->posX, (tamañoPantalla.height / 4)  *  (1 + 0.5) + tamañoPantalla.height / 4 * cas->listaObjetos[0]->posY));
+		
+		for (int j = 0; j < cas->numObj; j++)
+		{
+			cas->listaObjetos[j]->imagenobj->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaObjetos[j]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaObjetos[j]->posY)));
+
+			addChild(cas->listaObjetos[j]->imagenobj, 1);
+		}
+		//addChild(casillas[i]->imagenObjetos[0]);
+		for (int k = 0; k < cas->numEne; k++)
+		{
+			cas->listaEnemigos[k]->imagenEne->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaEnemigos[k]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaEnemigos[k]->posY)));
+
+			addChild(cas->listaEnemigos[k]->imagenEne, 1);
+		}
+	}
+	
+
+	
+	
 
 	//Teclas
 
@@ -236,35 +293,36 @@ void PlataformasScene::update(float dt){
 		
 
 	//Movimiento enemigo
-	for (int i = 0; i<2; i++)
+	for (int i = 0; i < 24; i++)
 	{
-
-		enemigos[i]->mover(imagenEnemigos[i]);
-		
-		if (enemigos[i]->tipoMovimiento == "basico")
+		for (int j = 0; j < casillas[i]->numEne; j++)
 		{
+			casillas[i]->listaEnemigos[j]->mover(casillas[i]->listaEnemigos[j]->imagenEne);
 
-			if (enemigos[i]->faseMov == 1 && imagenEnemigos[i]->getPositionX() >
-				tamañoPantalla.width - imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
-				enemigos[i]->faseMov = 2;
+			if (casillas[i]->listaEnemigos[j]->tipoMovimiento == "basico")
+			{
 
-			if (enemigos[i]->faseMov == 2 && imagenEnemigos[i]->getPositionX() <
-				imagenEnemigos[i]->getContentSize().width / 2 * imagenEnemigos[i]->getScaleX())
-				enemigos[i]->faseMov = 1;
-		}
+				if (casillas[i]->listaEnemigos[j]->faseMov == 1 && casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() >
+					tamañoPantalla.width - casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 * casillas[i]->listaEnemigos[j]->imagenEne->getScaleX())
+					casillas[i]->listaEnemigos[j]->faseMov = 2;
 
-		if (enemigos[i]->tipoMovimiento == "vertical")
-		{
-			if (imagenEnemigos[i]->getPositionX() + imagenEnemigos[i]->getContentSize().width / 2 + 20 > prinPos.x &&
-				imagenEnemigos[i]->getPositionX() - imagenEnemigos[i]->getContentSize().width / 2 - 20 < prinPos.x && 
-				enemigos[i]->faseMov == 1)
-				enemigos[i]->faseMov = 2;
+				if (casillas[i]->listaEnemigos[j]->faseMov == 2 && casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() <
+					casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 * casillas[i]->listaEnemigos[j]->imagenEne->getScaleX())
+					casillas[i]->listaEnemigos[j]->faseMov = 1;
+			}
 
-			if (imagenEnemigos[i]->getPositionY() <= 40 && enemigos[i]->faseMov == 2)
-				enemigos[i]->faseMov = 3;
+			if (casillas[i]->listaEnemigos[j]->tipoMovimiento == "vertical")
+			{
+				if (casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() + casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 + 20 > prinPos.x &&
+					casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() - casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 - 20 < prinPos.x &&
+					casillas[i]->listaEnemigos[j]->faseMov == 1)
+					casillas[i]->listaEnemigos[j]->faseMov = 2;
+
+				if (casillas[i]->listaEnemigos[j]->imagenEne->getPositionY() <= 40 && casillas[i]->listaEnemigos[j]->faseMov == 2)
+					casillas[i]->listaEnemigos[j]->faseMov = 3;
+			}
 		}
 	}
-
 	//Movimiento en X
 	if (prinMovL)
 		prinPos.x -= VELOCIDADPRIN;
