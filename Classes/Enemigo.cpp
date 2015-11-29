@@ -19,11 +19,61 @@ Enemigo::Enemigo(int id){
 		imagenEne->setScaleY(0.15f);
 
 	}
-	if (id == 2)
+	else if (id == 2)
 	{
 		velocidad = 3;
 		tipoMovimiento = "vertical";
 		imagen = "provisional/enemigo.png";
+
+		imagenEne = Sprite::create(imagen);
+		Size img = imagenEne->getContentSize();
+		imagenEne->setScaleX(0.15f);
+		imagenEne->setScaleY(0.15f);
+	}
+
+	else if (id == 3)
+	{
+		velocidad = 3;
+		tipoMovimiento = "basico";
+		imagen = "imagenes/T-rex.png";
+
+		imagenEne = Sprite::create(imagen);
+		Size img = imagenEne->getContentSize();
+		imagenEne->setScaleX(0.15f);
+		imagenEne->setScaleY(0.15f);
+
+	}
+
+	else if (id == 4)
+	{
+		velocidad = 3;
+		tipoMovimiento = "basico";
+		imagen = "imagenes/bicho fuente.png";
+
+		imagenEne = Sprite::create(imagen);
+		Size img = imagenEne->getContentSize();
+		imagenEne->setScaleX(0.15f);
+		imagenEne->setScaleY(0.15f);
+
+	}
+
+	else if (id == 5)
+	{
+		velocidad = 3;
+		tipoMovimiento = "vertical";
+		imagen = "imagenes/abeja.png";
+
+		imagenEne = Sprite::create(imagen);
+		Size img = imagenEne->getContentSize();
+		imagenEne->setScaleX(0.15f);
+		imagenEne->setScaleY(0.15f);
+	}
+
+	else if (id == 6)
+	{
+		velocidad = 3;
+		tipoMovimiento = "vertical";
+		imagen = "imagenes/lagarto 2.png";
 
 		imagenEne = Sprite::create(imagen);
 		Size img = imagenEne->getContentSize();
