@@ -11,7 +11,7 @@ USING_NS_CC;
 using namespace std;
 
 const int VELOCIDADPRIN = 3;
-const float FSALTOPRINCESA = 150;
+const float FSALTOPRINCESA = 230;
 const float FGRAVEDAD = 300;
 
 const int FRAMESCORRER = 14;
@@ -35,6 +35,22 @@ public:
 	//Sprite **imagenCasillas;
 	//char **imagenprueba;
 
+	Sprite **listaPlatform;
+	int numeroP = 0;
+	int contPlat;
+
+	Objeto **listaObj;
+	int numeroO = 0;
+	int contObj;
+
+
+    Enemigo **listaEnem;
+	int numeroE = 0;
+	int contEnem;
+
+
+
+
 	Objeto *objeto;
 //=======
 	//Sprite **imagenEnemigos;
@@ -52,7 +68,10 @@ public:
 	bool prinDerecha;
 	bool prinCae;
 	bool prinMovSalto;
+	bool prinMovArriba;
+	bool prinMovAbajo;
 	int prinPosIniSalto;
+	bool prinEscaleras;
 	Vec2 prinPos;
 	Vec2 prinPosAnt;
 
@@ -71,10 +90,12 @@ public:
 
 	bool colision(Sprite*, Sprite*); 
 	bool colisionPlataformas(Sprite*);
+	bool colisionEscaleras(Sprite*);
+	Sprite* ColisionPlataformas(Sprite*);
 
 	//reiniciar nivel
 
-	void reiniciarNivel(Ref *pSender);
+	void reiniciarNivel();
 
 	//ordenar escena
 	void ordenar(Sprite ***);

@@ -22,6 +22,9 @@ public:
 
 	Objeto **listaObjetos;
 	int numObj =0;
+
+	Objeto **listaPlataformas;
+	int numPla = 0;
 	
 	Enemigo **listaEnemigos;
 	int numEne = 0;

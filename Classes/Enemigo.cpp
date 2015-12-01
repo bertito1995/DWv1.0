@@ -11,24 +11,27 @@ Enemigo::Enemigo(int id){
 	{
 		velocidad = 3;
 		tipoMovimiento = "basico";
-		imagen = "provisional/enemigo.png";
+		imagen = "imagenes/arana.png";
 
 		imagenEne = Sprite::create(imagen);
 		Size img = imagenEne->getContentSize();
-		imagenEne->setScaleX(0.15f);
-		imagenEne->setScaleY(0.15f);
+		imagenEne->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		imagenEne->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
+
+		
+		
 
 	}
 	else if (id == 2)
 	{
 		velocidad = 3;
-		tipoMovimiento = "vertical";
-		imagen = "provisional/enemigo.png";
+		tipoMovimiento = "basico";
+		imagen = "imagenes/grande.png";
 
 		imagenEne = Sprite::create(imagen);
 		Size img = imagenEne->getContentSize();
-		imagenEne->setScaleX(0.15f);
-		imagenEne->setScaleY(0.15f);
+		imagenEne->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		imagenEne->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
 	}
 
 	else if (id == 3)
@@ -39,8 +42,8 @@ Enemigo::Enemigo(int id){
 
 		imagenEne = Sprite::create(imagen);
 		Size img = imagenEne->getContentSize();
-		imagenEne->setScaleX(0.15f);
-		imagenEne->setScaleY(0.15f);
+		imagenEne->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		imagenEne->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
 
 	}
 
@@ -52,9 +55,8 @@ Enemigo::Enemigo(int id){
 
 		imagenEne = Sprite::create(imagen);
 		Size img = imagenEne->getContentSize();
-		imagenEne->setScaleX(0.15f);
-		imagenEne->setScaleY(0.15f);
-
+		imagenEne->setScaleX(tamañoPantalla.width / (6 * img.width)*0.25);
+		imagenEne->setScaleY(tamañoPantalla.width / (4 * img.width)*0.2);
 	}
 
 	else if (id == 5)
@@ -65,8 +67,8 @@ Enemigo::Enemigo(int id){
 
 		imagenEne = Sprite::create(imagen);
 		Size img = imagenEne->getContentSize();
-		imagenEne->setScaleX(0.15f);
-		imagenEne->setScaleY(0.15f);
+		imagenEne->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		imagenEne->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
 	}
 
 	else if (id == 6)
@@ -77,8 +79,8 @@ Enemigo::Enemigo(int id){
 
 		imagenEne = Sprite::create(imagen);
 		Size img = imagenEne->getContentSize();
-		imagenEne->setScaleX(0.15f);
-		imagenEne->setScaleY(0.15f);
+		imagenEne->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		imagenEne->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
 	}
 }
 

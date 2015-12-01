@@ -22,22 +22,24 @@ bool PlataformasScene::init()
 
 	//plataformas
 
-	Sprite * a = Sprite::create("provisional/princesa.png");
+	/*Sprite * a = Sprite::create("provisional/princesa.png");
 	a->setScaleY(0.03);
 	a->setPosition(Point(tamañoPantalla.width / 2, 80));
 	plataformas = Vector <Sprite*>();
 	plataformas.pushBack(a);
 	for (int i = 0; i < plataformas.size(); i++){
-		addChild(plataformas.at(i),1);
-	}
+		addChild(plataformas.at(i),1);*
+	}*/
 
 	//princesa
 
 	princesa = Sprite::create("imagenes/princesa/animacionCorrerR/1.png");
-	princesa->setScaleX(0.07f);
-	princesa->setScaleY(0.07f);
-	princesa->setPosition(Point(tamañoPantalla.width / 2, 280));
-	addChild(princesa, 1);
+	Size img = princesa->getContentSize();
+	princesa->setScaleX(tamañoPantalla.width / (6 * img.width)*0.35);
+	princesa->setScaleY(tamañoPantalla.width / (4 * img.width)*0.22);
+	//princesa->setPosition(Point(50, 250));
+	princesa->setPosition(Point((tamañoPantalla.width / 6)  *   (0 + 0.5)+ (tamañoPantalla.width / 6) * -0.3, (tamañoPantalla.height / 4)  *  (0 + 0.5)+ (tamañoPantalla.width / 4) * 0.3));
+	addChild(princesa, 2);
 
 	prinDerecha = true;
 
@@ -114,6 +116,15 @@ bool PlataformasScene::init()
 	
 
 	//Modificamos la imagen
+	listaPlatform = new Sprite*[21];
+	numeroP = 21;
+
+	listaEnem = new Enemigo*[7];
+	numeroE = 7;
+
+	listaObj = new Objeto*[13];
+	numeroO = 13;
+
 
 	for (int i = 0; i < 24; i++)
 	{
@@ -143,6 +154,9 @@ bool PlataformasScene::init()
 			cas->listaObjetos[j]->imagenobj->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaObjetos[j]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaObjetos[j]->posY)));
 
 			addChild(cas->listaObjetos[j]->imagenobj, 1);
+			contObj += 1;
+			listaObj[contObj - 1] = cas->listaObjetos[j];
+
 		}
 		//addChild(casillas[i]->imagenObjetos[0]);
 		for (int k = 0; k < cas->numEne; k++)
@@ -150,6 +164,19 @@ bool PlataformasScene::init()
 			cas->listaEnemigos[k]->imagenEne->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaEnemigos[k]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaEnemigos[k]->posY)));
 
 			addChild(cas->listaEnemigos[k]->imagenEne, 1);
+
+			contEnem += 1;
+			listaEnem[contEnem-1] = cas->listaEnemigos[k];
+		}
+
+		for (int l = 0; l < cas->numPla; l++)
+		{
+			cas->listaPlataformas[l]->imagenobj->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaPlataformas[l]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaPlataformas[l]->posY)));
+
+			addChild(cas->listaPlataformas[l]->imagenobj, 1);
+
+			contPlat += 1;
+			listaPlatform[contPlat-1] = cas->listaPlataformas[l]->imagenobj;
 		}
 	}
 	
@@ -170,6 +197,9 @@ bool PlataformasScene::init()
 	prinSalto = false;
 	prinCae = true;
 	prinMovSalto = false;
+	prinMovAbajo = false;
+	prinMovArriba = false;
+	prinEscaleras = false;
 	prinPos.x = princesa->getPositionX();
 	prinPos.y = princesa->getPositionY();
 	prinPosAnt.x = princesa->getPositionX();
@@ -187,7 +217,8 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 		prinPosAnt.x = prinPos.x;
 		prinPos.x -= VELOCIDADPRIN;
 		prinMovL = true;
-		if (prinDerecha){
+		if (prinDerecha)
+		{
 			princesa->setTexture(CCTextureCache::sharedTextureCache()->addImage("imagenes/princesa/animacionCorrerL/1.png"));
 			prinDerecha = false;
 		}
@@ -197,14 +228,29 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 		prinPosAnt.x = prinPos.x;
 		prinPos.x += VELOCIDADPRIN;
 		prinMovR = true;
-		if (prinDerecha == false){
+		if (prinDerecha == false)
+		{
 			princesa->setTexture(CCTextureCache::sharedTextureCache()->addImage("imagenes/princesa/animacionCorrerR/1.png"));
 			prinDerecha = true;
 		}
 	}
+	if (idTecla == EventKeyboard::KeyCode::KEY_UP_ARROW && prinEscaleras == true) 
+	{
+		
+		prinMovArriba = true;
+	}
+
+	if (idTecla == EventKeyboard::KeyCode::KEY_DOWN_ARROW && prinEscaleras == true)
+	{
+		prinPosAnt.y = prinPos.y;
+		prinPos.y -= VELOCIDADPRIN;
+		princesa->setPositionY(prinPos.y);
+		prinMovAbajo = true;
+	}
 
 	if (idTecla == EventKeyboard::KeyCode::KEY_SPACE){
-		if (prinSalto == false){
+		if (prinSalto == false)
+		{
 			prinSalto = true;
 			prinMovSalto = true;
 			prinPosIniSalto = prinPos.y;
@@ -216,16 +262,36 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 //Evento de soltar una tecla
 
 void PlataformasScene::teclaLevantada(EventKeyboard::KeyCode idTecla, Event *evento){
-	if (idTecla == EventKeyboard::KeyCode::KEY_LEFT_ARROW) {
-		if (prinMovL){
+	if (idTecla == EventKeyboard::KeyCode::KEY_LEFT_ARROW) 
+	{
+		if (prinMovL)
+		{
 			prinMovL = false;
 			princesa->setTexture(correrPrincesaL.at(0)->getTexture());
 		}
 	}
-	if (idTecla == EventKeyboard::KeyCode::KEY_RIGHT_ARROW){
-		if (prinMovR){
+	if (idTecla == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
+	{
+		if (prinMovR)
+		{
 			prinMovR = false;
 			princesa->setTexture(correrPrincesaR.at(0)->getTexture());
+		}
+	}
+	if (idTecla == EventKeyboard::KeyCode::KEY_UP_ARROW)
+	{
+		if (prinMovArriba)
+		{
+			prinMovArriba = false;
+			
+		}
+	}
+	if (idTecla == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
+	{
+		if (prinMovAbajo)
+		{
+			prinMovAbajo = false;
+			
 		}
 	}
 }
@@ -238,7 +304,8 @@ void PlataformasScene::update(float dt){
 
 
 	//movimiento en y princesa
-	if (prinMovSalto){
+	if (prinMovSalto)
+	{
 		tiempoSalto += dt;
 		prinPosAnt.y = prinPos.y;
 		prinPos.y = (FSALTOPRINCESA*tiempoSalto) - (0.5f * FGRAVEDAD*tiempoSalto*tiempoSalto) + prinPosIniSalto;
@@ -251,14 +318,16 @@ void PlataformasScene::update(float dt){
 
 	contadoCorrer += dt;
 
-	if (contadoCorrer > FRCORRER && prinMovR && prinSalto == false){
+	if (contadoCorrer > FRCORRER && prinMovR && prinSalto == false)
+	{
 		princesa->setTexture(correrPrincesaR.at(indiceCorrer)->getTexture());
 		contadoCorrer = 0;
 		indiceCorrer++;
 		if (indiceCorrer == FRAMESCORRER)
 			indiceCorrer = 0;
 	}
-	if (contadoCorrer > FRCORRER && prinMovL && prinSalto == false){
+	if (contadoCorrer > FRCORRER && prinMovL && prinSalto == false)
+	{
 		princesa->setTexture(correrPrincesaL.at(indiceCorrer)->getTexture());
 		contadoCorrer = 0;
 		indiceCorrer++;
@@ -268,67 +337,106 @@ void PlataformasScene::update(float dt){
 		
 	//Movimiento enemigo
 
-	for (int i = 0; i < 24; i++)
-
+	
+	for (int i = 0; i < numeroE; i++)
 	{
-		for (int j = 0; j < casillas[i]->numEne; j++)
+		listaEnem[i]->mover(listaEnem[i]->imagenEne);
+
+		if (listaEnem[i]->tipoMovimiento == "basico")
 		{
-			casillas[i]->listaEnemigos[j]->mover(casillas[i]->listaEnemigos[j]->imagenEne);
 
-			if (casillas[i]->listaEnemigos[j]->tipoMovimiento == "basico")
-			{
+			if (listaEnem[i]->faseMov == 1 && listaEnem[i]->imagenEne->getPositionX() >
+				tamañoPantalla.width - listaEnem[i]->imagenEne->getContentSize().width / 2 * listaEnem[i]->imagenEne->getScaleX())
+				listaEnem[i]->faseMov = 2;
 
-				if (casillas[i]->listaEnemigos[j]->faseMov == 1 && casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() >
-					tamañoPantalla.width - casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 * casillas[i]->listaEnemigos[j]->imagenEne->getScaleX())
-					casillas[i]->listaEnemigos[j]->faseMov = 2;
+			if (listaEnem[i]->faseMov == 2 && listaEnem[i]->imagenEne->getPositionX() <
+				listaEnem[i]->imagenEne->getContentSize().width / 2 * listaEnem[i]->imagenEne->getScaleX())
+				listaEnem[i]->faseMov = 1;
+		}
 
-				if (casillas[i]->listaEnemigos[j]->faseMov == 2 && casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() <
-					casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 * casillas[i]->listaEnemigos[j]->imagenEne->getScaleX())
-					casillas[i]->listaEnemigos[j]->faseMov = 1;
-			}
+		if (listaEnem[i]->tipoMovimiento == "vertical")
+		{
+			if (listaEnem[i]->imagenEne->getPositionX() + listaEnem[i]->imagenEne->getContentSize().width / 2 + 20 > prinPos.x &&
+				listaEnem[i]->imagenEne->getPositionX() - listaEnem[i]->imagenEne->getContentSize().width / 2 - 20 < prinPos.x &&
+				listaEnem[i]->faseMov == 1)
+				listaEnem[i]->faseMov = 2;
 
-			if (casillas[i]->listaEnemigos[j]->tipoMovimiento == "vertical")
-			{
-				if (casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() + casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 + 20 > prinPos.x &&
-					casillas[i]->listaEnemigos[j]->imagenEne->getPositionX() - casillas[i]->listaEnemigos[j]->imagenEne->getContentSize().width / 2 - 20 < prinPos.x &&
-					casillas[i]->listaEnemigos[j]->faseMov == 1)
-					casillas[i]->listaEnemigos[j]->faseMov = 2;
-
-				if (casillas[i]->listaEnemigos[j]->imagenEne->getPositionY() <= 40 && casillas[i]->listaEnemigos[j]->faseMov == 2)
-					casillas[i]->listaEnemigos[j]->faseMov = 3;
-			}
+			if (listaEnem[i]->imagenEne->getPositionY() <= 40 && listaEnem[i]->faseMov == 2)
+				listaEnem[i]->faseMov = 3;
 		}
 	}
+	
 //<<<<<<< HEAD
 	//Movimiento en X
 	//if (prinMovL)
 //=======
 
 	//colision princesa/enemigos
-	/*for (int i = 0; i < 2; i++)
-		if (colision(imagenEnemigos[i], princesa))
-			reiniciarNivel(this);*/
+	/*for (int i = 0; i < numeroE; i++)
+	{
+		if (colision(listaEnem[i]->imagenEne, princesa))
+			reiniciarNivel(); 
+	}*/
 
 	//colision princesa/plataforma
-	for (int i = 0; i < plataformas.size(); i++)
+	//for (int i = 0; i < numeroO; i++)
+	//{
+	if (colisionEscaleras(princesa))
+	{
+		prinEscaleras = true;
+		prinCae = false;
+
+	}
+
+	//}
+	else if (prinMovSalto == false)
+	{
+		prinEscaleras = false;
+		prinCae = true;
+	}
+
+	if (prinMovArriba)
+	{
+		prinPosAnt.y = prinPos.y;
+		prinPos.y += VELOCIDADPRIN;
+		princesa->setPositionY(prinPos.y);
+
+	}
+	if (prinMovAbajo)
+	{
+		prinPosAnt.y = prinPos.y;
+		prinPos.y -= VELOCIDADPRIN;
+		princesa->setPositionY(prinPos.y);
+
+	}
+	for (int i = 0; i < numeroP; i++)
 	{
 		if (colisionPlataformas(princesa))
 		{
+			Sprite * aux = ColisionPlataformas(princesa);
 			tiempoSalto = 0;
-			if (prinPosAnt.y - (princesa->getContentSize().height/2 * princesa->getScaleY()) > 
-				plataformas.at(i)->getPositionY() + (plataformas.at(i)->getContentSize().height/2 * plataformas.at(i)->getScaleY())){
+			if (prinPosAnt.y - (princesa->getContentSize().height / 2 * princesa->getScaleY()) >
+				aux->getPositionY() + (aux->getContentSize().height / 2 * aux->getScaleY()))
+			{
 				prinPos.y = prinPosAnt.y;
 				prinSalto = false;
 				prinMovSalto = false;
 				prinCae = true;
+				//for (int j = 0; j < numeroO; j++)
+				//{
+				/*if (colisionEscaleras(princesa) == false)
+				{
+					prinMovArriba = false;
+					prinMovAbajo = false;
+				}*/
+				//}
 			}
 			else
 			{
 				prinPos.x = prinPosAnt.x;
 				prinPos.y = prinPosAnt.y;
 				princesa->setPosition(Point(prinPosAnt.x, prinPosAnt.y));
-				prinMovL = false;
-				prinMovR = false;
+				prinCae = true;
 			}
 
 		}
@@ -336,14 +444,33 @@ void PlataformasScene::update(float dt){
 		{
 			//Cae constante, mejor un contador propio
 			prinPosAnt.y = prinPos.y;
-			prinPos.y -= (0.5f * FGRAVEDAD*dt*dt*50);
+			prinPos.y -= (0.5f * FGRAVEDAD*dt*dt * 50);
 			princesa->setPositionY(prinPos.y);
 			prinSalto = true;
+		
 		}
 	}
 
+	//colision mascarprinvesa
+	for (int i = 0; i < numeroO; i++)
+	{
+		if (listaObj[i]->tipoObjeto == "mascara" && colision(princesa, listaObj[i]->imagenobj))
+		{
+			princesa->setPosition(Point((tamañoPantalla.width / 6)  * (3 + 0.5) + tamañoPantalla.width / 6 * 0.2, (tamañoPantalla.height / 4)  *  (1 + 0.5) + tamañoPantalla.height / 4 * -0.3));
+			//princesa->setPosition(Point(0, 300));
+			prinPosAnt.x = princesa->getPositionX();
+			prinPosAnt.y = princesa->getPositionY();
+
+			prinPos.x= princesa->getPositionX();
+			prinPos.y= princesa->getPositionY();
+			prinCae = true;
+		}
+	}
+	
+
 	//Movimiento princesa en X
-	if (prinMovL){
+	if (prinMovL)
+	{
 		prinPosAnt.x = prinPos.x;
 //>>>>>>> 67d8f5992ea5ba74dbc4eeca5d86741cea0b6144
 		prinPos.x -= VELOCIDADPRIN;
@@ -391,10 +518,16 @@ bool PlataformasScene::colision(Sprite* a, Sprite* b) {
 		b->getPositionY() + ((b->getContentSize().height / 2) * b->getScaleY()))
 		return false;
 	return true;
-}bool PlataformasScene::colisionPlataformas(Sprite* a) {	for (int i = 0; i < plataformas.size(); i++){		if (colision(plataformas.at(i), a))			return true;	}	return false;}void PlataformasScene::reiniciarNivel(Ref *pSender) {
+}bool PlataformasScene::colisionPlataformas(Sprite* a) {	
+	for (int i = 0; i < numeroP; i++)
+	{		if (colision(listaPlatform[i], a))			return true;	}	return false;}bool PlataformasScene::colisionEscaleras(Sprite* a){
+	for (int i = 0; i < numeroO; i++)
+	{		if (listaObj[i]->tipoObjeto == "escalada") 		{			if (colision(listaObj[i]->imagenobj, a))				return true;		}	}	return false;}Sprite* PlataformasScene::ColisionPlataformas(Sprite* a){
+	for (int i = 0; i < numeroP; i++)
+	{		if (colision(listaPlatform[i], a))			return listaPlatform[i];	}}void PlataformasScene::reiniciarNivel() {
 	auto scene = PlataformasScene::createScene();
 
-	//Director::getInstance()->popScene();
+    //Director::getInstance()->popScene();
 	Director::getInstance()->replaceScene(scene);
 }
 

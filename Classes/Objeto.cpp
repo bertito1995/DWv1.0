@@ -12,8 +12,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
 	
 		
 	}
@@ -26,8 +26,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.13);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.08);
 
 
 	}
@@ -40,8 +40,9 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.32);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.22);
+
 
 
 	}
@@ -54,8 +55,9 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.35);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.35);
+
 
 
 	}
@@ -67,8 +69,9 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.5);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.5);
+
 
 
 	}
@@ -81,8 +84,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.58);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.58);
 
 
 	}
@@ -95,8 +98,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.55);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.55);
 
 
 	}
@@ -109,8 +112,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.65);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.65);
 
 
 	}
@@ -124,8 +127,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.61);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.53);
 
 
 	}
@@ -138,8 +141,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.09);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.06);
 
 
 	}
@@ -148,12 +151,12 @@ Objeto::Objeto(int id) {
 	{
 
 		tipoObjeto = "plataforma";
-		imagenObjeto = "provisional/princesa.png";
+		imagenObjeto = "provisional/plataforma.png";
 
 		imagenobj = Sprite::create(imagenObjeto);
-		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		//Size img = imagenobj->getContentSize();
+		//imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
+		//imagenobj->setScaleY(0.03);
 
 
 	}
@@ -180,8 +183,8 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.18);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.18);
 
 
 	}
@@ -194,10 +197,20 @@ Objeto::Objeto(int id) {
 
 		imagenobj = Sprite::create(imagenObjeto);
 		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
-		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
 
 
 	}
+
+	else if (id == 15)
+	{
+		
+		tipoObjeto = "escalada";
+		imagenObjeto = "provisional/escalera.png";
+		imagenobj = Sprite::create(imagenObjeto);
+	}
+
+	
 
 }
