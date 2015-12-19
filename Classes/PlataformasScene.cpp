@@ -39,7 +39,7 @@ bool PlataformasScene::init()
 	princesa->setScaleY(tamañoPantalla.width / (4 * img.width)*0.22);
 	//princesa->setPosition(Point(50, 250));
 	princesa->setPosition(Point((tamañoPantalla.width / 6)  *   (0 + 0.5)+ (tamañoPantalla.width / 6) * -0.3, (tamañoPantalla.height / 4)  *  (0 + 0.5)+ (tamañoPantalla.width / 4) * 0.3));
-	addChild(princesa, 2);
+	addChild(princesa, 3);
 
 	prinDerecha = true;
 
@@ -163,7 +163,7 @@ bool PlataformasScene::init()
 		{
 			cas->listaEnemigos[k]->imagenEne->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaEnemigos[k]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaEnemigos[k]->posY)));
 
-			addChild(cas->listaEnemigos[k]->imagenEne, 1);
+			addChild(cas->listaEnemigos[k]->imagenEne, 2);
 
 			contEnem += 1;
 			listaEnem[contEnem-1] = cas->listaEnemigos[k];
@@ -444,7 +444,7 @@ void PlataformasScene::update(float dt){
 		{
 			//Cae constante, mejor un contador propio
 			prinPosAnt.y = prinPos.y;
-			prinPos.y -= (0.5f * FGRAVEDAD*dt*dt * 50);
+			prinPos.y -= (0.5f * FGRAVEDAD*dt*dt*5);
 			princesa->setPositionY(prinPos.y);
 			prinSalto = true;
 		

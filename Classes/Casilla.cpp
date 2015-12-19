@@ -258,7 +258,7 @@ Casilla::Casilla(int id) {
 
 		Objeto *plataforma = new Objeto(11);
 		plataforma->posX = 0.4;
-		plataforma->posY = -0.15;
+		plataforma->posY = -0.2;
 
 		Size img = plataforma->imagenobj->getContentSize();
 		plataforma->imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width) * 0.3);
@@ -288,7 +288,7 @@ Casilla::Casilla(int id) {
 
 		Objeto *plataforma = new Objeto(11);
 		plataforma->posX = 0;
-		plataforma->posY = -0.15;
+		plataforma->posY = -0.2;
 
 		Size img = plataforma->imagenobj->getContentSize();
 		plataforma->imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*1);
@@ -315,7 +315,7 @@ Casilla::Casilla(int id) {
 
 		Objeto *plataforma = new Objeto(11);
 		plataforma->posX = -0.35;
-		plataforma->posY =-0.15;
+		plataforma->posY =-0.2;
 
 		Size img = plataforma->imagenobj->getContentSize();
 		plataforma->imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.38);
