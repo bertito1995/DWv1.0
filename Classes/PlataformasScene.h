@@ -6,6 +6,7 @@
 #include "Enemigo.h"
 #include "Casilla.h"
 #include "Objeto.h"
+#include "PuzzleEscena.h"
 
 USING_NS_CC;
 using namespace std;
@@ -22,7 +23,7 @@ const float FRCORRER = 0.07f;
 class PlataformasScene : public cocos2d::Layer
 {
 public:
-    static cocos2d::Scene* createScene();
+    static cocos2d::Scene* createScene(int * a);
 	
 	Vector <Sprite*> correrPrincesaR;
 	Vector <Sprite*> correrPrincesaL;
@@ -37,17 +38,18 @@ public:
 
 	Sprite **listaPlatform;
 	int numeroP = 0;
-	int contPlat;
+	int contPlat = 0;
 
 	Objeto **listaObj;
 	int numeroO = 0;
-	int contObj;
+	int contObj = 0;
 
 
     Enemigo **listaEnem;
 	int numeroE = 0;
-	int contEnem;
+	int contEnem =0 ;
 
+	
 
 
 
@@ -96,6 +98,7 @@ public:
 	//reiniciar nivel
 
 	void reiniciarNivel();
+	void volverPuzzle();
 
 	//ordenar escena
 	void ordenar(Sprite ***);

@@ -1,6 +1,7 @@
 #include "Enemigo.h"
 
 
+
 Enemigo::Enemigo(int id){
 
 	faseMov = 1;

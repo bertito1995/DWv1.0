@@ -6,12 +6,19 @@
 Casilla::Casilla(int id) {
 
 	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
-	
-	
+	identificador = id;
+	fija = false;
+	if (id == 0)
+	{
+		imagenCasilla = "casillas/nivel_0.png";
+		
+	}
 
 	if (id == 1)
 	{
 		imagenCasilla = "casillas/nivel_1.png"; 
+
+		fija = true;
 
 		listaPlataformas = new Objeto*[1];
 		numPla = 1;
@@ -585,6 +592,8 @@ Casilla::Casilla(int id) {
 	{
 		imagenCasilla = "casillas/nivel_20.png";
 
+		fija = true;
+
 		listaObjetos = new Objeto*[2];
 		numObj = 2;
 
@@ -763,14 +772,14 @@ Casilla::Casilla(int id) {
 	}
 
 	imagencas = Sprite::create(imagenCasilla);
-	escalar(imagencas);
+	//escalar(imagencas);
 
 
 }
 
 
 
-void Casilla::escalar(Sprite *imagen)
+void Casilla::escalarPlataforma(Sprite *imagen)
 {
 	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
 
@@ -779,6 +788,28 @@ void Casilla::escalar(Sprite *imagen)
 	Size img = imagen->getContentSize();
 	imagen->setScaleX(tamañoPantalla.width / (6 * img.width));
 	imagen->setScaleY(tamañoPantalla.height / (4 * img.height));
+}
+
+void Casilla::escalarPuzzle(Sprite *imagen)
+{
+	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
+
+
+
+	Size img = imagen->getContentSize();
+	imagen->setScaleX(tamañoPantalla.width / (9 * img.width));
+	imagen->setScaleY(tamañoPantalla.height / (7 * img.height));
+}
+
+void Casilla::escalarVector(Sprite *imagen)
+{
+	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
+
+
+
+	Size img = imagen->getContentSize();
+	imagen->setScaleX(tamañoPantalla.width / (17 * img.width));
+	imagen->setScaleY(tamañoPantalla.height / (12 * img.height));
 }
 
 

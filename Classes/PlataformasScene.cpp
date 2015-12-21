@@ -2,11 +2,16 @@
 #include "Enemigo.h"
 #include "Casilla.h"
 #include "Objeto.h"
+#include "PuzzleEscena.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 
-Scene* PlataformasScene::createScene()
+int *n;
+
+Scene* PlataformasScene::createScene(int *a)
 {
+	n = a;
 	auto scene = Scene::create();
 	auto layer = PlataformasScene::create();
     scene->addChild(layer);
@@ -38,7 +43,7 @@ bool PlataformasScene::init()
 	princesa->setScaleX(tamañoPantalla.width / (6 * img.width)*0.35);
 	princesa->setScaleY(tamañoPantalla.width / (4 * img.width)*0.22);
 	//princesa->setPosition(Point(50, 250));
-	princesa->setPosition(Point((tamañoPantalla.width / 6)  *   (0 + 0.5)+ (tamañoPantalla.width / 6) * -0.3, (tamañoPantalla.height / 4)  *  (0 + 0.5)+ (tamañoPantalla.width / 4) * 0.3));
+	princesa->setPosition(Point((tamañoPantalla.width / 6)  *   (0 + 0.5)+ (tamañoPantalla.width / 6) * -0.3, (tamañoPantalla.height / 4)  *  (0 + 0.5)+ (tamañoPantalla.width / 4) * 0.15));
 	addChild(princesa, 3);
 
 	prinDerecha = true;
@@ -112,6 +117,7 @@ bool PlataformasScene::init()
 	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
 
 	casillas = new Casilla*[24];
+	
 	//casillas = new Casilla*[1];
 	
 
@@ -125,10 +131,11 @@ bool PlataformasScene::init()
 	listaObj = new Objeto*[13];
 	numeroO = 13;
 
+	
 
 	for (int i = 0; i < 24; i++)
 	{
-		Casilla *cas = new Casilla(i+1);
+		Casilla *cas = new Casilla(n[i]);
 		casillas[i] = cas;
 		//Sprite *imagencas = Sprite::create(cas->imagenCasilla);
 
@@ -140,6 +147,7 @@ bool PlataformasScene::init()
 		//Size img = cas->imagencas->getContentSize();
 		/*imagenCasillas[i]->setScaleX(tamañoPantalla.width / (6 * img.width));
 		imagenCasillas[i]->setScaleY(tamañoPantalla.height / (4 * img.height));*/
+		cas->escalarPlataforma(cas->imagencas);
 		cas->imagencas->setPosition(Point (columnaImg, filaImg) );
 		//cas->imagencas->setPosition(Point((tamañoPantalla.width / 6)  *   (2 + 0.5), (tamañoPantalla.height / 4)  *  (1 + 0.5)));
 		addChild(cas->imagencas, 0);
@@ -256,6 +264,10 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 			prinPosIniSalto = prinPos.y;
 			tiempoSalto = 0;
 		}
+	}
+	if (idTecla == EventKeyboard::KeyCode::KEY_A)
+	{
+		volverPuzzle();
 	}
 }
 
@@ -525,11 +537,16 @@ bool PlataformasScene::colision(Sprite* a, Sprite* b) {
 	{		if (listaObj[i]->tipoObjeto == "escalada") 		{			if (colision(listaObj[i]->imagenobj, a))				return true;		}	}	return false;}Sprite* PlataformasScene::ColisionPlataformas(Sprite* a){
 	for (int i = 0; i < numeroP; i++)
 	{		if (colision(listaPlatform[i], a))			return listaPlatform[i];	}}void PlataformasScene::reiniciarNivel() {
-	auto scene = PlataformasScene::createScene();
+	auto scene = PlataformasScene::createScene(n);
 
     //Director::getInstance()->popScene();
 	Director::getInstance()->replaceScene(scene);
-}
+}void PlataformasScene::volverPuzzle() {
+	//auto scene = PuzzleEscena::createScene();
+
+	Director::getInstance()->popScene();
+	//Director::getInstance()->replaceScene(scene);
+}
 
 void PlataformasScene::menuCloseCallback(Ref* pSender)
 {

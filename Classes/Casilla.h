@@ -18,7 +18,12 @@ public:
 	char *imagenCasilla;
 	Casilla(int);
 
-	void escalar(Sprite *);
+	int identificador;
+	bool fija;
+
+	void escalarPlataforma(Sprite *);
+	void escalarPuzzle(Sprite *);
+	void escalarVector(Sprite *);
 
 	Objeto **listaObjetos;
 	int numObj =0;
