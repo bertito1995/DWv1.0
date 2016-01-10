@@ -7,6 +7,7 @@
 #include "Casilla.h"
 #include "Objeto.h"
 #include "PuzzleEscena.h"
+#include "FinEscena.h"
 
 USING_NS_CC;
 using namespace std;
@@ -17,6 +18,13 @@ const float FGRAVEDAD = 300;
 
 const int FRAMESCORRER = 14;
 const float FRCORRER = 0.07f;
+const float FRMONEDA = 0.01f;
+const int FRAMESMONEDA = 60;
+const float FRFANTASMA = 0.1f;
+const int FRAMESFANTASMA = 68;
+const float FRMASCARA = 0.2f;
+const float FRHIERBA = 0.01f;
+const float FRENEMIGOS = 0.1f;
 
 //***** y = v*sen(alpha)*t -1/2gt^2
 
@@ -27,8 +35,22 @@ public:
 	
 	Vector <Sprite*> correrPrincesaR;
 	Vector <Sprite*> correrPrincesaL;
+	Vector <Sprite*> animacionMoneda;
+	Vector <Sprite*> animacionAbeja;
+	int contAnimacionMoneda;
+	float TimerMoneda;
+	Vector <Sprite*> animacionFantasma;
+	int contAnimacionFantasma;
+	float TimerFantasma;
+	int fantasmaAnimado;
+	int mascaraAnimada;
+	float TimerMascara;
+	float TimerHierba;
 	Sprite *princesa;
-	Enemigo **enemigos;
+	float TimerEnemigos;
+	Enemigo **enemigosAcabados;
+	float TimerEnemigosVerticales;
+	//Enemigo **enemigos;
 //<<<<<<< HEAD
 	//Sprite **imagenEnemigos;
 
@@ -53,10 +75,10 @@ public:
 
 
 
-	Objeto *objeto;
+	//Objeto *objeto;
 //=======
 	//Sprite **imagenEnemigos;
-	Vector <Sprite*> plataformas;
+	//Vector <Sprite*> plataformas;
 //>>>>>>> 67d8f5992ea5ba74dbc4eeca5d86741cea0b6144
 
 	float tiempoSalto = 0;
@@ -76,6 +98,13 @@ public:
 	bool prinEscaleras;
 	Vec2 prinPos;
 	Vec2 prinPosAnt;
+	bool pausa;
+	int contMonedas;
+	bool movPlataforma;
+	int maximoHierba;
+	float contadorHierba;
+	bool SPresionada;
+	bool movArbol;
 
     virtual bool init();
     
@@ -93,15 +122,21 @@ public:
 	bool colision(Sprite*, Sprite*); 
 	bool colisionPlataformas(Sprite*);
 	bool colisionEscaleras(Sprite*);
+	bool PlataformaEntre(Sprite*, Sprite*);
+	bool colisionSoloPlataformaArriba();
 	Sprite* ColisionPlataformas(Sprite*);
 
 	//reiniciar nivel
 
 	void reiniciarNivel();
 	void volverPuzzle();
+	void finJuego();
 
 	//ordenar escena
 	void ordenar(Sprite ***);
+
+	//eliminar punteros
+	void eliminarPunteros();
     
     // implement the "static create()" method manually
 	CREATE_FUNC(PlataformasScene);

@@ -193,14 +193,8 @@ Objeto::Objeto(int id) {
 	{
 
 		tipoObjeto = "mascara";
-		imagenObjeto = "imagenes/mascara.png";
-
+		imagenObjeto = "imagenes/invisible.png";
 		imagenobj = Sprite::create(imagenObjeto);
-		Size img = imagenobj->getContentSize();
-		imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
-		imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
-
-
 	}
 
 	else if (id == 15)
@@ -209,6 +203,26 @@ Objeto::Objeto(int id) {
 		tipoObjeto = "escalada";
 		imagenObjeto = "provisional/escalera.png";
 		imagenobj = Sprite::create(imagenObjeto);
+	}
+	else if (id == 16)
+	{
+		tipoObjeto = "fantasma";
+		imagenObjeto = "imagenes/invisible.png";
+		imagenobj = Sprite::create(imagenObjeto);
+	}
+
+	else if (id == 17)
+	{
+
+		tipoObjeto = "fin";
+		imagenObjeto = "imagenes/invisible.png";
+
+		imagenobj = Sprite::create(imagenObjeto);
+		Size img = imagenobj->getContentSize();
+		imagenobj->setScaleX(tamañoPantalla.width / (10 * img.width));
+		imagenobj->setScaleY(tamañoPantalla.height / (8 * img.height));
+
+
 	}
 
 	

@@ -35,9 +35,15 @@ public:
 	void cambio(Ref *pSender);
 	void colocar();
 	bool quedan(Casilla **, int );
+	bool quedanPorColocar(Casilla **, int);
+	bool puzzleCorrecto(Nivel *);
+	void reiniciar();
+
+	void update(float dt);
 	
 	Sprite *coloca;
 	Sprite *cambia;
+	Sprite *reset;
 
 	bool ayuda;
 

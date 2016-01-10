@@ -109,6 +109,14 @@ Casilla::Casilla(int id) {
 
 		listaPlataformas[1] = plataforma1;
 
+		listaEnemigos = new Enemigo*[1];
+		numEne = 1;
+
+		Enemigo *araña = new Enemigo(2);
+		araña->posX = 0.0;
+		araña->posY = -0.1;
+		listaEnemigos[0] = araña;
+
 		/*Objeto *plataforma2 = new Objeto(11);
 		plataforma2->posX = 0.45;
 		plataforma2->posY = 0.4;
@@ -144,17 +152,11 @@ Casilla::Casilla(int id) {
 	{
 		imagenCasilla = "casillas/nivel_4.png";
 
-		listaEnemigos = new Enemigo*[1];
-		numEne = 1;
-
-		Enemigo *araña = new Enemigo(2);
-		araña->posX = 0;
-		araña->posY = 0;
-		listaEnemigos[0] = araña;
 
 
-		listaPlataformas = new Objeto*[4];
-		numPla = 4;
+
+		listaPlataformas = new Objeto*[3];
+		numPla = 3;
 
 		Objeto *plataforma = new Objeto(11);
 		plataforma->posX = -0.1;
@@ -175,7 +177,7 @@ Casilla::Casilla(int id) {
 		plataforma2->imagenobj->setScaleY(tamañoPantalla.width / (4 * img2.width)*0.06);
 
 		listaPlataformas[1] = plataforma2;
-
+/*
 		Objeto *plataforma3 = new Objeto(11);
 		plataforma3->posX = 0.3;
 		plataforma3->posY = -0.25;
@@ -184,7 +186,7 @@ Casilla::Casilla(int id) {
 		plataforma3->imagenobj->setScaleX(tamañoPantalla.width / (6 * img3.width) * 0.1);
 		plataforma3->imagenobj->setScaleY(tamañoPantalla.width / (4 * img3.width)*0.15);
 
-		listaPlataformas[2] = plataforma3;
+		listaPlataformas[2] = plataforma3;*/
 
 		Objeto *plataforma4 = new Objeto(11);
 		plataforma4->posX = -0.05;
@@ -194,7 +196,15 @@ Casilla::Casilla(int id) {
 		plataforma4->imagenobj->setScaleX(tamañoPantalla.width / (6 * img4.width) * 0.8);
 		plataforma4->imagenobj->setScaleY(tamañoPantalla.width / (4 * img4.width)*0.02);
 
-		listaPlataformas[3] = plataforma4;
+		listaPlataformas[2] = plataforma4;
+
+		listaObjetos = new Objeto*[1];
+		numObj = 1;
+
+		Objeto *fantasma = new Objeto(16);
+		fantasma->posX = 0.1;
+		fantasma->posY = 0.85;
+		listaObjetos[0] = fantasma;
 	}
 
 	else if (id == 5)
@@ -352,6 +362,28 @@ Casilla::Casilla(int id) {
 	else if (id == 11)
 	{
 		imagenCasilla = "casillas/nivel_11.png";
+
+		listaObjetos = new Objeto*[1];
+		numObj = 1;
+
+
+		Objeto *hierba = new Objeto(6);
+		hierba->posX = -0.25;
+		hierba->posY = 0.2;
+		listaObjetos[0] = hierba;
+
+		listaPlataformas = new Objeto*[1];
+		numPla = 1;
+
+		Objeto *plataforma2 = new Objeto(11);
+		plataforma2->posX = -0.25;
+		plataforma2->posY = 0.3;
+
+		Size img2 = plataforma2->imagenobj->getContentSize();
+		plataforma2->imagenobj->setScaleX(tamañoPantalla.width / (6 * img2.width)*0.6);
+		plataforma2->imagenobj->setScaleY(tamañoPantalla.width / (4 * img2.width)*0.02);
+
+		listaPlataformas[0] = plataforma2;
 	}
 
 	else if (id == 12)
@@ -376,7 +408,7 @@ Casilla::Casilla(int id) {
 
 		Enemigo *araña = new Enemigo(1);
 		araña->posX = -0.4;
-		araña->posY = 0.4;
+		araña->posY = 0.25;
 		listaEnemigos[0] = araña;
 
 
@@ -414,7 +446,7 @@ Casilla::Casilla(int id) {
 
 		Enemigo *abeja = new Enemigo(5);
 		abeja->posX = 0.25;
-		abeja->posY = 0.2;
+		abeja->posY = 0.1;
 		listaEnemigos[0] = abeja;
 
 
@@ -500,47 +532,35 @@ Casilla::Casilla(int id) {
 	{
 		imagenCasilla = "casillas/nivel_17.png";
 
-		listaObjetos = new Objeto*[2];
-		numObj = 2;
-
-
-		Objeto *hierba = new Objeto(6);
-		hierba->posX = -0.25;
-		hierba->posY = -0.2;
-		listaObjetos[0] = hierba;
+		listaObjetos = new Objeto*[1];
+		numObj = 1;
 
 		Objeto *puente = new Objeto(8);
 		puente->posX = 0.0;
 		puente->posY = 0.4;
-		listaObjetos[1] = puente;
+		listaObjetos[0] = puente;
 
-		listaPlataformas = new Objeto*[2];
-		numPla =2;
+		/*listaPlataformas = new Objeto*[1];
+		numPla =1;
 
 		Objeto *plataforma = new Objeto(11);
-		plataforma->posX = 0.3;
+		plataforma->posX = 0.4;
 		plataforma->posY = 0.3;
 
 		Size img = plataforma->imagenobj->getContentSize();
 		plataforma->imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.4);
 		plataforma->imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.02);
 
-		listaPlataformas[0] = plataforma;
+		listaPlataformas[0] = plataforma;*/
 
-		Objeto *plataforma2 = new Objeto(11);
-		plataforma2->posX = -0.25;
-		plataforma2->posY = -0.1;
-
-		Size img2 = plataforma2->imagenobj->getContentSize();
-		plataforma2->imagenobj->setScaleX(tamañoPantalla.width / (6 * img2.width)*0.6);
-		plataforma2->imagenobj->setScaleY(tamañoPantalla.width / (4 * img2.width)*0.02);
-
-		listaPlataformas[1] = plataforma2;
+		
 	}
 
 	else if (id == 18)
 	{
 		imagenCasilla = "casillas/nivel_18.png";
+
+		fija = true;
 
 		listaEnemigos = new Enemigo*[2];
 		numEne = 2;
@@ -568,6 +588,15 @@ Casilla::Casilla(int id) {
 
 		listaPlataformas[0] = plataforma;
 
+		listaObjetos = new Objeto*[1];
+		numObj = 1;
+
+
+		Objeto *invisible = new Objeto(17);
+		invisible->posX = 0.4;
+		invisible->posY = 0.4;
+		listaObjetos[0] = invisible;
+
 		
 	}
 
@@ -592,7 +621,7 @@ Casilla::Casilla(int id) {
 	{
 		imagenCasilla = "casillas/nivel_20.png";
 
-		fija = true;
+		
 
 		listaObjetos = new Objeto*[2];
 		numObj = 2;
@@ -748,6 +777,8 @@ Casilla::Casilla(int id) {
 		//listaEnemigos = new Enemigo*[1];
 		numObj = 2;
 		//numEne = 1;
+
+		
 	
 
 		Objeto *nube = new Objeto(5);

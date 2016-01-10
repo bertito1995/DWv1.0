@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 
 #include "MenuEscena.h"
+#include "ControlesEscena.h"
 
 USING_NS_CC;
 

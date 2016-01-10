@@ -13,9 +13,15 @@ public:
 	Enemigo();
 	Enemigo(int);
 	void mover(Sprite *);
+	void cambiarImagen();
 
-	char *imagen;
+	char *imagenL;
+	char *imagenL2;
+	char *imagenR;
+	char *imagenR2;
+	int imagenActual;
 	char *tipoMovimiento;
+	int identificador;
 
 	Sprite *imagenEne;
 

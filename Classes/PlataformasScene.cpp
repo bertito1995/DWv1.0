@@ -3,6 +3,7 @@
 #include "Casilla.h"
 #include "Objeto.h"
 #include "PuzzleEscena.h"
+#include "FinEscena.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -25,23 +26,12 @@ bool PlataformasScene::init()
 	if ( !Layer::init() )
         return false;
 
-	//plataformas
-
-	/*Sprite * a = Sprite::create("provisional/princesa.png");
-	a->setScaleY(0.03);
-	a->setPosition(Point(tamañoPantalla.width / 2, 80));
-	plataformas = Vector <Sprite*>();
-	plataformas.pushBack(a);
-	for (int i = 0; i < plataformas.size(); i++){
-		addChild(plataformas.at(i),1);*
-	}*/
-
 	//princesa
 
 	princesa = Sprite::create("imagenes/princesa/animacionCorrerR/1.png");
 	Size img = princesa->getContentSize();
-	princesa->setScaleX(tamañoPantalla.width / (6 * img.width)*0.35);
-	princesa->setScaleY(tamañoPantalla.width / (4 * img.width)*0.22);
+	princesa->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+	princesa->setScaleY(tamañoPantalla.width / (4 * img.width)*0.05);
 	//princesa->setPosition(Point(50, 250));
 	princesa->setPosition(Point((tamañoPantalla.width / 6)  *   (0 + 0.5)+ (tamañoPantalla.width / 6) * -0.3, (tamañoPantalla.height / 4)  *  (0 + 0.5)+ (tamañoPantalla.width / 4) * 0.15));
 	addChild(princesa, 3);
@@ -72,64 +62,85 @@ bool PlataformasScene::init()
 		correrPrincesaL.pushBack(aux2);
 	}
 
+	//animacion moneda
 
-
-	//Creamos enemigo y su imagen, y los añadimos al vector
-	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
-
-	//imagenEnemigos = new Sprite*[2];
-	/*enemigos = new Enemigo*[2];
-	
-
-	Enemigo *enemigoBasico = new Enemigo(1);
-	enemigos[0] = enemigoBasico;
-	Enemigo *enemigoVertical = new Enemigo(2);
-	enemigos[1] = enemigoVertical;*/
-	
-	/*Sprite *imagenEn = Sprite::create(enemigoBasico->imagen);
-	imagenEnemigos[0] = imagenEn;
-	Sprite *imagenEnVertical = Sprite::create(enemigoVertical->imagen);
-	imagenEnemigos[1] = imagenEnVertical;*/
-
-	//Modificamos la imagen
-
-	/*for (int i = 0; i < 2; i++)
+	animacionMoneda = Vector <Sprite*>();
+	for (int i = 0; i < FRAMESMONEDA; i++)
 	{
-		imagenEnemigos[i]->setScaleX(0.15f);
-		imagenEnemigos[i]->setScaleY(0.15f);
+		if (i + 3 >= 10)
+		{
+			string texto = "imagenes/moneda/animacion moneda__0";
+			texto += to_string(i + 3);
+			texto = texto + ".png";
+			Sprite *aux = Sprite::create(texto);
+			animacionMoneda.pushBack(aux);
+		}
+		else
+		{
+			string texto = "imagenes/moneda/animacion moneda__00";
+			texto += to_string(i + 3);
+			texto = texto + ".png";
+			Sprite *aux = Sprite::create(texto);
+			animacionMoneda.pushBack(aux);
+		}
 	}
-<<<<<<< HEAD
-	imagenEnemigos[0]->setPosition(Point(imagenEnemigos[0]->getContentSize().width / 2 * imagenEnemigos[0]->getScaleX(), 40));
-	imagenEnemigos[1]->setPosition(Point(imagenEnemigos[1]->getContentSize().width / 2 * imagenEnemigos[1]->getScaleX() + 500, 250));*/
-/*=======
-	imagenEnemigos[0]->setPosition(Point(imagenEnemigos[0]->getContentSize().width / 2 * imagenEnemigos[0]->getScaleX(), 25));
-	imagenEnemigos[1]->setPosition(Point(imagenEnemigos[1]->getContentSize().width / 2 * imagenEnemigos[1]->getScaleX() + 500, 250));
->>>>>>> 67d8f5992ea5ba74dbc4eeca5d86741cea0b6144*/
 
-	//Añadimos los enemigos a la escena
-	/*for (int i = 0; i < 2; i++)
-		addChild(imagenEnemigos[i], 1);*/
+	//animacion fantasma
 
+	animacionFantasma = Vector <Sprite*>();
+	for (int i = 0; i < FRAMESFANTASMA; i++)
+	{
+		if (i + 1 >= 10)
+		{
+			string texto = "imagenes/fantasma/fantasma__0";
+			texto += to_string(i + 1);
+			texto = texto + ".png";
+			Sprite *aux = Sprite::create(texto);
+			animacionFantasma.pushBack(aux);
+		}
+		else
+		{
+			string texto = "imagenes/fantasma/fantasma__00";
+			texto += to_string(i + 1);
+			texto = texto + ".png";
+			Sprite *aux = Sprite::create(texto);
+			animacionFantasma.pushBack(aux);
+		}
+	}
+
+	//animacion abeja
+	for (int i = 0; i < 20; i++) {
+		string texto = "imagenes/enemigos/abeja/";
+		texto += to_string(i + 1);
+		texto = texto + ".png";
+		Sprite *aux = Sprite::create(texto);
+		aux->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+		aux->setScaleY(tamañoPantalla.width / (4 * img.width)*0.1);
+		animacionAbeja.pushBack(aux);
+	}
 	
 
+	//Ver si la 11 tiene encima la 17
+	maximoHierba = 58;
 
-	//Creamos casilla y su imagen, y los añadimos al vector
-	//acordarse de eliminar el contenido del puntero *** delete(enemigoBasico)
+	for (int i = 0; i < 24; i++) {
+		if (n[i] == 11 && n[i+6] == 17){
+			maximoHierba *= 2;
+		}
+	}
+
 
 	casillas = new Casilla*[24];
 	
-	//casillas = new Casilla*[1];
-	
-
 	//Modificamos la imagen
-	listaPlatform = new Sprite*[21];
-	numeroP = 21;
+	listaPlatform = new Sprite*[19];
+	numeroP = 19;
 
 	listaEnem = new Enemigo*[7];
 	numeroE = 7;
 
-	listaObj = new Objeto*[13];
-	numeroO = 13;
+	listaObj = new Objeto*[20];
+	numeroO = 20;
 
 	
 
@@ -137,26 +148,14 @@ bool PlataformasScene::init()
 	{
 		Casilla *cas = new Casilla(n[i]);
 		casillas[i] = cas;
-		//Sprite *imagencas = Sprite::create(cas->imagenCasilla);
 
 		float columnaImg = (tamañoPantalla.width / 6)  * ((float)(i - ((i / 6) * 6)) + 0.5);
 		float filaImg = (tamañoPantalla.height / 4)  * ((float)(i / 6) + 0.5);
 
-
-		//imagenCasillas[i]->setContentSize(Size(tamañoPantalla.width/6, tamañoPantalla.height/4));
-		//Size img = cas->imagencas->getContentSize();
-		/*imagenCasillas[i]->setScaleX(tamañoPantalla.width / (6 * img.width));
-		imagenCasillas[i]->setScaleY(tamañoPantalla.height / (4 * img.height));*/
 		cas->escalarPlataforma(cas->imagencas);
 		cas->imagencas->setPosition(Point (columnaImg, filaImg) );
-		//cas->imagencas->setPosition(Point((tamañoPantalla.width / 6)  *   (2 + 0.5), (tamañoPantalla.height / 4)  *  (1 + 0.5)));
 		addChild(cas->imagencas, 0);
 
-
-		//cas->setPosition(Point((tamañoPantalla.width / 6)  *   (2 + 0.5), (tamañoPantalla.height / 4)  *  (1 + 0.5)));
-		//cas->listaObjetos[0]->imagenobj->setPosition(Point((tamañoPantalla.width / 6)  *   (2 + 0.5) + (cas->listaObjetos[0]->posX)*img.width, (tamañoPantalla.height / 4)  *  (1 + 0.5) + (cas->listaObjetos[0]->posY)*img.height));
-		//cas->listaObjetos[0]->imagenobj->setPosition(Point((tamañoPantalla.width / 6)  * (2 + 0.5) + tamañoPantalla.width / 6 * cas->listaObjetos[0]->posX, (tamañoPantalla.height / 4)  *  (1 + 0.5) + tamañoPantalla.height / 4 * cas->listaObjetos[0]->posY));
-		
 		for (int j = 0; j < cas->numObj; j++)
 		{
 			cas->listaObjetos[j]->imagenobj->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaObjetos[j]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaObjetos[j]->posY)));
@@ -166,7 +165,6 @@ bool PlataformasScene::init()
 			listaObj[contObj - 1] = cas->listaObjetos[j];
 
 		}
-		//addChild(casillas[i]->imagenObjetos[0]);
 		for (int k = 0; k < cas->numEne; k++)
 		{
 			cas->listaEnemigos[k]->imagenEne->setPosition(Point(columnaImg + (tamañoPantalla.width / 6) * cas->listaEnemigos[k]->posX, (filaImg + (tamañoPantalla.height / 4) * cas->listaEnemigos[k]->posY)));
@@ -175,6 +173,7 @@ bool PlataformasScene::init()
 
 			contEnem += 1;
 			listaEnem[contEnem-1] = cas->listaEnemigos[k];
+
 		}
 
 		for (int l = 0; l < cas->numPla; l++)
@@ -187,11 +186,16 @@ bool PlataformasScene::init()
 			listaPlatform[contPlat-1] = cas->listaPlataformas[l]->imagenobj;
 		}
 	}
-	
 
+	enemigosAcabados = new Enemigo*[2];
+	int j = 0;
+	for (int i = 0; i < numeroE; i++) {
+		if (listaEnem[i]->tipoMovimiento == "vertical") {
+			enemigosAcabados[j] = listaEnem[i];
+			j++;
+		}
+	}
 	
-	
-
 	//Teclas
 
 	auto listener = EventListenerKeyboard::create();
@@ -208,10 +212,22 @@ bool PlataformasScene::init()
 	prinMovAbajo = false;
 	prinMovArriba = false;
 	prinEscaleras = false;
+	pausa = false;
+	movPlataforma = false;
+	SPresionada = false;
+	movArbol = false;
+	fantasmaAnimado = 0;
+	contMonedas = 0;
+	contAnimacionMoneda = 0;
+	TimerMoneda = 0.0f;
+	contAnimacionFantasma = 0;
+	TimerFantasma = 0.0f;
+	mascaraAnimada = 0;
 	prinPos.x = princesa->getPositionX();
 	prinPos.y = princesa->getPositionY();
 	prinPosAnt.x = princesa->getPositionX();
 	prinPosAnt.y = princesa->getPositionY();
+	contadorHierba = 0.0f;
 
 
     return true;
@@ -267,7 +283,12 @@ void PlataformasScene::teclaPresionada(EventKeyboard::KeyCode idTecla, Event *ev
 	}
 	if (idTecla == EventKeyboard::KeyCode::KEY_A)
 	{
+		pausa = true;
 		volverPuzzle();
+	}
+	if (idTecla == EventKeyboard::KeyCode::KEY_S)
+	{
+		SPresionada = true;
 	}
 }
 
@@ -306,197 +327,407 @@ void PlataformasScene::teclaLevantada(EventKeyboard::KeyCode idTecla, Event *eve
 			
 		}
 	}
+	if (idTecla == EventKeyboard::KeyCode::KEY_S)
+	{
+		if (SPresionada)
+		{
+			SPresionada = false;
+
+		}
+	}
 }
 
 //Funcion que se repite
 
 void PlataformasScene::update(float dt){
-	
-	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
 
+	if (pausa == false) {
 
-	//movimiento en y princesa
-	if (prinMovSalto)
-	{
-		tiempoSalto += dt;
-		prinPosAnt.y = prinPos.y;
-		prinPos.y = (FSALTOPRINCESA*tiempoSalto) - (0.5f * FGRAVEDAD*tiempoSalto*tiempoSalto) + prinPosIniSalto;
-		princesa->setPositionY(prinPos.y);
-		prinCae = false;
-		prinSalto = true;
-	}
-
-	//Animacion princesa
-
-	contadoCorrer += dt;
-
-	if (contadoCorrer > FRCORRER && prinMovR && prinSalto == false)
-	{
-		princesa->setTexture(correrPrincesaR.at(indiceCorrer)->getTexture());
-		contadoCorrer = 0;
-		indiceCorrer++;
-		if (indiceCorrer == FRAMESCORRER)
-			indiceCorrer = 0;
-	}
-	if (contadoCorrer > FRCORRER && prinMovL && prinSalto == false)
-	{
-		princesa->setTexture(correrPrincesaL.at(indiceCorrer)->getTexture());
-		contadoCorrer = 0;
-		indiceCorrer++;
-		if (indiceCorrer == FRAMESCORRER)
-			indiceCorrer = 0;
-	}
+		Size tamañoPantalla = Director::getInstance()->getVisibleSize();
 		
-	//Movimiento enemigo
-
-	
-	for (int i = 0; i < numeroE; i++)
-	{
-		listaEnem[i]->mover(listaEnem[i]->imagenEne);
-
-		if (listaEnem[i]->tipoMovimiento == "basico")
+		//colision enemigos/princesa
+		for (int i = 0; i < numeroE; i++) 
 		{
-
-			if (listaEnem[i]->faseMov == 1 && listaEnem[i]->imagenEne->getPositionX() >
-				tamañoPantalla.width - listaEnem[i]->imagenEne->getContentSize().width / 2 * listaEnem[i]->imagenEne->getScaleX())
-				listaEnem[i]->faseMov = 2;
-
-			if (listaEnem[i]->faseMov == 2 && listaEnem[i]->imagenEne->getPositionX() <
-				listaEnem[i]->imagenEne->getContentSize().width / 2 * listaEnem[i]->imagenEne->getScaleX())
-				listaEnem[i]->faseMov = 1;
-		}
-
-		if (listaEnem[i]->tipoMovimiento == "vertical")
-		{
-			if (listaEnem[i]->imagenEne->getPositionX() + listaEnem[i]->imagenEne->getContentSize().width / 2 + 20 > prinPos.x &&
-				listaEnem[i]->imagenEne->getPositionX() - listaEnem[i]->imagenEne->getContentSize().width / 2 - 20 < prinPos.x &&
-				listaEnem[i]->faseMov == 1)
-				listaEnem[i]->faseMov = 2;
-
-			if (listaEnem[i]->imagenEne->getPositionY() <= 40 && listaEnem[i]->faseMov == 2)
-				listaEnem[i]->faseMov = 3;
-		}
-	}
-	
-//<<<<<<< HEAD
-	//Movimiento en X
-	//if (prinMovL)
-//=======
-
-	//colision princesa/enemigos
-	/*for (int i = 0; i < numeroE; i++)
-	{
-		if (colision(listaEnem[i]->imagenEne, princesa))
-			reiniciarNivel(); 
-	}*/
-
-	//colision princesa/plataforma
-	//for (int i = 0; i < numeroO; i++)
-	//{
-	if (colisionEscaleras(princesa))
-	{
-		prinEscaleras = true;
-		prinCae = false;
-
-	}
-
-	//}
-	else if (prinMovSalto == false)
-	{
-		prinEscaleras = false;
-		prinCae = true;
-	}
-
-	if (prinMovArriba)
-	{
-		prinPosAnt.y = prinPos.y;
-		prinPos.y += VELOCIDADPRIN;
-		princesa->setPositionY(prinPos.y);
-
-	}
-	if (prinMovAbajo)
-	{
-		prinPosAnt.y = prinPos.y;
-		prinPos.y -= VELOCIDADPRIN;
-		princesa->setPositionY(prinPos.y);
-
-	}
-	for (int i = 0; i < numeroP; i++)
-	{
-		if (colisionPlataformas(princesa))
-		{
-			Sprite * aux = ColisionPlataformas(princesa);
-			tiempoSalto = 0;
-			if (prinPosAnt.y - (princesa->getContentSize().height / 2 * princesa->getScaleY()) >
-				aux->getPositionY() + (aux->getContentSize().height / 2 * aux->getScaleY()))
+			if (colision(princesa, listaEnem[i]->imagenEne))
 			{
-				prinPos.y = prinPosAnt.y;
-				prinSalto = false;
-				prinMovSalto = false;
-				prinCae = true;
-				//for (int j = 0; j < numeroO; j++)
-				//{
-				/*if (colisionEscaleras(princesa) == false)
-				{
-					prinMovArriba = false;
-					prinMovAbajo = false;
-				}*/
-				//}
-			}
-			else
-			{
-				prinPos.x = prinPosAnt.x;
-				prinPos.y = prinPosAnt.y;
-				princesa->setPosition(Point(prinPosAnt.x, prinPosAnt.y));
-				prinCae = true;
+				reiniciarNivel();
 			}
 
 		}
-		else if (prinCae)
+
+		//movimiento en y princesa
+		if (prinMovSalto)
 		{
-			//Cae constante, mejor un contador propio
+			tiempoSalto += dt;
 			prinPosAnt.y = prinPos.y;
-			prinPos.y -= (0.5f * FGRAVEDAD*dt*dt*5);
+			prinPos.y = (FSALTOPRINCESA*tiempoSalto) - (0.5f * FGRAVEDAD*tiempoSalto*tiempoSalto) + prinPosIniSalto;
 			princesa->setPositionY(prinPos.y);
+			prinCae = false;
 			prinSalto = true;
-		
 		}
-	}
 
-	//colision mascarprinvesa
-	for (int i = 0; i < numeroO; i++)
-	{
-		if (listaObj[i]->tipoObjeto == "mascara" && colision(princesa, listaObj[i]->imagenobj))
+		//Animacion princesa
+
+		contadoCorrer += dt;
+
+		if (contadoCorrer > FRCORRER && prinMovR && prinSalto == false)
 		{
-			princesa->setPosition(Point((tamañoPantalla.width / 6)  * (3 + 0.5) + tamañoPantalla.width / 6 * 0.2, (tamañoPantalla.height / 4)  *  (1 + 0.5) + tamañoPantalla.height / 4 * -0.3));
-			//princesa->setPosition(Point(0, 300));
-			prinPosAnt.x = princesa->getPositionX();
-			prinPosAnt.y = princesa->getPositionY();
+			princesa->setTexture(correrPrincesaR.at(indiceCorrer)->getTexture());
+			contadoCorrer = 0;
+			indiceCorrer++;
+			if (indiceCorrer == FRAMESCORRER)
+				indiceCorrer = 0;
+		}
+		if (contadoCorrer > FRCORRER && prinMovL && prinSalto == false)
+		{
+			princesa->setTexture(correrPrincesaL.at(indiceCorrer)->getTexture());
+			contadoCorrer = 0;
+			indiceCorrer++;
+			if (indiceCorrer == FRAMESCORRER)
+				indiceCorrer = 0;
+		}
 
-			prinPos.x= princesa->getPositionX();
-			prinPos.y= princesa->getPositionY();
+		//Movimiento enemigo
+
+
+		for (int i = 0; i < numeroE; i++)
+		{
+
+			if (listaEnem[i]->tipoMovimiento == "basico")
+			{
+
+				listaEnem[i]->mover(listaEnem[i]->imagenEne);
+				if (listaEnem[i]->faseMov == 1 && listaEnem[i]->imagenEne->getPositionX() >
+					tamañoPantalla.width - listaEnem[i]->imagenEne->getContentSize().width / 2 * listaEnem[i]->imagenEne->getScaleX() 
+					|| listaEnem[i]->faseMov == 1 && colisionPlataformas(listaEnem[i]->imagenEne) == false) {
+					listaEnem[i]->faseMov = 2;
+					listaEnem[i]->mover(listaEnem[i]->imagenEne);
+				}
+
+				if (listaEnem[i]->faseMov == 2 && listaEnem[i]->imagenEne->getPositionX() <
+					listaEnem[i]->imagenEne->getContentSize().width / 2 * listaEnem[i]->imagenEne->getScaleX()
+					|| listaEnem[i]->faseMov == 2 && colisionPlataformas(listaEnem[i]->imagenEne) == false) {
+					listaEnem[i]->faseMov = 1;
+					listaEnem[i]->mover(listaEnem[i]->imagenEne);
+				}
+			}
+
+			if (listaEnem[i]->tipoMovimiento == "vertical")
+			{
+				listaEnem[i]->mover(listaEnem[i]->imagenEne);
+				if (listaEnem[i]->imagenEne->getPositionX() + listaEnem[i]->imagenEne->getContentSize().width / 2 + 20 > prinPos.x &&
+					listaEnem[i]->imagenEne->getPositionX() - listaEnem[i]->imagenEne->getContentSize().width / 2 - 20 < prinPos.x &&
+					listaEnem[i]->imagenEne->getPositionY() > princesa->getPositionY() &&
+					PlataformaEntre(listaEnem[i]->imagenEne, princesa) == false &&
+					listaEnem[i]->faseMov == 1) 
+					{
+						listaEnem[i]->faseMov = 2;
+					}
+				if (colisionPlataformas(listaEnem[i]->imagenEne) == true && listaEnem[i]->faseMov == 2)
+				{
+					listaEnem[i]->faseMov = 3;
+					Enemigo *aux = new Enemigo(1);
+					for (int j = i; j < numeroE - 1; j++)
+					{
+						aux = listaEnem[j];
+						listaEnem[j] = listaEnem[j + 1];
+						listaEnem[j + 1] = aux;
+					}
+					numeroE--;
+				}
+			}
+		}
+		if (colisionEscaleras(princesa))
+		{
+			prinEscaleras = true;
+			prinCae = false;
+
+		}
+
+		else if (prinMovSalto == false)
+		{
+			prinEscaleras = false;
 			prinCae = true;
 		}
-	}
-	
 
-	//Movimiento princesa en X
-	if (prinMovL)
-	{
-		prinPosAnt.x = prinPos.x;
-//>>>>>>> 67d8f5992ea5ba74dbc4eeca5d86741cea0b6144
-		prinPos.x -= VELOCIDADPRIN;
-	}
-	if (prinMovR){
-		prinPosAnt.x = prinPos.x;
-		prinPos.x += VELOCIDADPRIN;
-	}
+		if (prinMovArriba)
+		{
+			prinPosAnt.y = prinPos.y;
+			prinPos.y += VELOCIDADPRIN;
+			princesa->setPositionY(prinPos.y);
 
-	if (prinPos.x > princesa->getContentSize().width / 2 * princesa->getScaleX() 
-		&& prinPos.x < tamañoPantalla.width - princesa->getContentSize().width / 2 * princesa->getScaleX())
-		princesa->setPositionX(prinPos.x);
-	else
-		prinPos.x = princesa->getPositionX();
+		}
+		if (prinMovAbajo)
+		{
+			prinPosAnt.y = prinPos.y;
+			prinPos.y -= VELOCIDADPRIN;
+			princesa->setPositionY(prinPos.y);
+
+		}
+
+		//Colision princesa/plataformas
+
+		for (int i = 0; i < numeroP; i++)
+		{
+			if (colisionPlataformas(princesa))
+			{
+				Sprite * aux = ColisionPlataformas(princesa);
+				tiempoSalto = 0;
+				if (prinPosAnt.y - (princesa->getContentSize().height / 2 * princesa->getScaleY()) >
+					aux->getPositionY() + (aux->getContentSize().height / 2 * aux->getScaleY()))
+				{
+					prinPos.y = prinPosAnt.y;
+					prinSalto = false;
+					prinMovSalto = false;
+					prinCae = true;
+				}
+				else
+				{
+					prinPos.x = prinPosAnt.x;
+					prinPos.y = prinPosAnt.y;
+					prinMovSalto = false;
+					prinSalto = true;
+					princesa->setPosition(Point(prinPosAnt.x, prinPosAnt.y));
+					prinCae = true;
+				}
+				/*if (colisionSoloPlataformaArriba() == true) {
+					prinPos.y = prinPosAnt.y;
+					prinSalto = false;
+					prinMovSalto = false;
+					prinCae = true;
+				}
+				else
+				{
+					prinPos.x = prinPosAnt.x;
+					prinPos.y = prinPosAnt.y;
+					prinMovSalto = false;
+					prinSalto = true;
+					princesa->setPosition(Point(prinPosAnt.x, prinPosAnt.y));
+					prinCae = true;
+				}*/
+			}
+			else if (prinCae)
+			{
+				//Cae constante, mejor un contador propio
+				prinPosAnt.y = prinPos.y;
+				prinPos.y -= (0.5f * FGRAVEDAD*dt*dt * 5);
+				princesa->setPositionY(prinPos.y);
+				prinSalto = true;
+
+			}
+		}
+
+		//colision objetos
+		for (int i = 0; i < numeroO; i++)
+		{
+			//mascara
+			if (listaObj[i]->tipoObjeto == "mascara" && colision(princesa, listaObj[i]->imagenobj) && mascaraAnimada == 2)
+			{
+				princesa->setPosition(Point((tamañoPantalla.width / 6)  * (3 + 0.5) + tamañoPantalla.width / 6 * 0.2, (tamañoPantalla.height / 4)  *  (1 + 0.5) + tamañoPantalla.height / 4 * -0.3));
+				//princesa->setPosition(Point(0, 300));
+				prinPosAnt.x = princesa->getPositionX();
+				prinPosAnt.y = princesa->getPositionY();
+
+				prinPos.x = princesa->getPositionX();
+				prinPos.y = princesa->getPositionY();
+				prinCae = true;
+			}
+			//colision moneda
+			
+			if (listaObj[i]->tipoObjeto == "moneda"){
+				
+				if (colision(princesa, listaObj[i]->imagenobj))
+				{
+					removeChild(listaObj[i]->imagenobj, true);
+					contMonedas++;
+					Objeto *aux = new Objeto(1);
+					for (int j = i; j < numeroO - 1; j++)
+					{
+						aux = listaObj[j];
+						listaObj[j] = listaObj[j + 1];
+						listaObj[j + 1] = aux;
+					}
+					numeroO--;
+				}
+			
+			}
+			//HitBox máscara
+
+			if (listaObj[i]->tipoObjeto == "invisible" && fantasmaAnimado == 0 && colision(princesa, listaObj[i]->imagenobj)) {
+				fantasmaAnimado = 1;
+			}
+			//colision pajaro
+			
+			if (movPlataforma == false && listaObj[i]->tipoObjeto == "pajaro" && colision(princesa, listaObj[i]->imagenobj) && SPresionada) {
+				Sprite *aux = Sprite::create("imagenes/pulsador pajaro2.png");
+				listaObj[i]->imagenobj->setTexture(aux->getTexture());
+				movPlataforma = true;
+			}
+			//colision seta
+			if (movArbol == false && listaObj[i]->tipoObjeto == "seta" && colision(princesa, listaObj[i]->imagenobj) && SPresionada) {
+				movArbol = true;
+			}
+
+			//colision fuente
+			if (listaObj[i]->tipoObjeto == "fin" && colision(princesa, listaObj[i]->imagenobj) && SPresionada && contMonedas == 5) {
+				finJuego();
+				
+			}
+
+		}
+		
+		//animacion moneda	
+
+		TimerMoneda += dt;
+		if (TimerMoneda > FRMONEDA)
+		{
+			if (contAnimacionMoneda >= FRAMESMONEDA - 1)
+				contAnimacionMoneda = 0;
+			else
+				contAnimacionMoneda++;
+			for (int i = 0; i < numeroO; i++) {
+				if (listaObj[i]->tipoObjeto == "moneda") {
+					listaObj[i]->imagenobj->setTexture(animacionMoneda.at(contAnimacionMoneda)->getTexture());
+				}
+			}
+			TimerMoneda = 0.0f;
+		}
+
+		//animacion fantasma	
+		
+		if (fantasmaAnimado == 1)
+		{
+			TimerFantasma += dt;
+			if (TimerFantasma > FRFANTASMA) 
+			{
+				for (int i = 0; i < numeroO; i++) 
+				{
+					if (listaObj[i]->tipoObjeto == "fantasma") 
+					{
+						listaObj[i]->imagenobj->setTexture(animacionFantasma.at(contAnimacionFantasma)->getTexture());
+						listaObj[i]->imagenobj->setPositionX(listaObj[i]->imagenobj->getPositionX() + 2.0f);
+						if (contAnimacionFantasma == 0) {
+							Size img = listaObj[i]->imagenobj->getContentSize();
+							listaObj[i]->imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width) * 2);
+							listaObj[i]->imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width) * 2);
+						}
+					}
+				}
+				if (contAnimacionFantasma == 45) 
+				{
+					for (int i = 0; i < numeroO; i++) 
+					{
+						if (listaObj[i]->tipoObjeto == "mascara")
+						{
+							for (int j = 0; j < numeroO; j++) 
+							{
+								if (listaObj[j]->tipoObjeto == "fantasma") 
+								{
+									listaObj[i]->imagenobj->setPosition(Point(listaObj[j]->imagenobj->getPositionX() - 7.0f, listaObj[j]->imagenobj->getPositionY() - 60.0f));
+									Sprite *aux = Sprite::create("imagenes/mascara.png");
+									listaObj[i]->imagenobj->setTexture(aux->getTexture());
+									Size img = aux->getContentSize();
+									listaObj[i]->imagenobj->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
+									listaObj[i]->imagenobj->setScaleY(tamañoPantalla.width / (4 * img.width)*0.2);
+									mascaraAnimada = 1;
+								}
+							}
+						}
+					}
+				}
+				if (contAnimacionFantasma >= FRAMESFANTASMA - 1) 
+				{
+					fantasmaAnimado = 2;
+					Sprite *aux = Sprite::create("imagenes/invisible.png");
+					for (int i = 0; i < numeroO; i++) 
+					{
+						if (listaObj[i]->tipoObjeto == "fantasma") 
+						{
+							listaObj[i]->imagenobj->setTexture(aux->getTexture());
+						}
+					}
+				}
+				else
+					contAnimacionFantasma++;
+				TimerFantasma = 0.0f;
+			}
+		}
+
+		//animacion Mascara
+		if (mascaraAnimada == 1) {
+			TimerMascara += dt;
+			if (TimerMascara > FRMASCARA) {
+				for (int i = 0; i < numeroO; i++) {
+					if (listaObj[i]->tipoObjeto == "mascara") {
+						listaObj[i]->imagenobj->setPositionY(listaObj[i]->imagenobj->getPositionY() - 3.0f);
+						if (colisionPlataformas(listaObj[i]->imagenobj)) {
+							mascaraAnimada = 2;
+						}
+					}
+
+				}
+			}
+		}
+
+		//movimiento hierba
+		if (movPlataforma) {
+			TimerHierba += dt;
+			if (TimerHierba > FRHIERBA) {
+				for (int i = 0; i < 24; i++) {
+					if (casillas[i]->identificador == 11) {
+						contadorHierba += 1.5f;
+						if (contadorHierba < maximoHierba) {
+							casillas[i]->listaObjetos[0]->imagenobj->setPositionY(casillas[i]->listaObjetos[0]->imagenobj->getPositionY() + 1.5f);
+							casillas[i]->listaPlataformas[0]->imagenobj->setPositionY(casillas[i]->listaPlataformas[0]->imagenobj->getPositionY() + 1.5f);
+						}
+					}
+				}
+				TimerHierba = 0;
+			}
+		}
+
+		//animaciones enemigos
+		TimerEnemigos += dt;
+		if (TimerEnemigos > FRENEMIGOS) {
+			TimerEnemigos = 0;
+			for (int i = 0; i < numeroE; i++) {
+				listaEnem[i]->cambiarImagen();
+			}
+		}
+
+		//animacion enemigos verticales
+		TimerEnemigosVerticales += dt;
+		if (TimerEnemigosVerticales > FRENEMIGOS) {
+			TimerEnemigosVerticales = 0;
+			for (int i = 0; i < 2; i++) {
+				if (enemigosAcabados[i]->faseMov == 3) {
+					enemigosAcabados[i]->imagenActual++;
+					if (enemigosAcabados[i]->imagenActual < 20) {
+						enemigosAcabados[i]->imagenEne->setTexture(animacionAbeja.at(enemigosAcabados[i]->imagenActual)->getTexture());
+					}
+				}
+			}
+		}
+
+
+
+		//Movimiento princesa en X
+		if (prinMovL)
+		{
+			prinPosAnt.x = prinPos.x;
+			prinPos.x -= VELOCIDADPRIN;
+		}
+		if (prinMovR) {
+			prinPosAnt.x = prinPos.x;
+			prinPos.x += VELOCIDADPRIN;
+		}
+
+		if (prinPos.x > princesa->getContentSize().width / 2 * princesa->getScaleX()
+			&& prinPos.x < tamañoPantalla.width - princesa->getContentSize().width / 2 * princesa->getScaleX())
+			princesa->setPositionX(prinPos.x);
+		else
+			prinPos.x = princesa->getPositionX();
+	}
 		
 }
 
@@ -534,7 +765,18 @@ bool PlataformasScene::colision(Sprite* a, Sprite* b) {
 	for (int i = 0; i < numeroP; i++)
 	{		if (colision(listaPlatform[i], a))			return true;	}	return false;}bool PlataformasScene::colisionEscaleras(Sprite* a){
 	for (int i = 0; i < numeroO; i++)
-	{		if (listaObj[i]->tipoObjeto == "escalada") 		{			if (colision(listaObj[i]->imagenobj, a))				return true;		}	}	return false;}Sprite* PlataformasScene::ColisionPlataformas(Sprite* a){
+	{		if (listaObj[i]->tipoObjeto == "escalada")		{			if (colision(listaObj[i]->imagenobj, a))				return true;		}	}	return false;}bool PlataformasScene::colisionSoloPlataformaArriba() {	for (int i = 0; i < numeroP; i++) {		if (colision(listaPlatform[i], princesa) &&
+			prinPosAnt.y - (princesa->getContentSize().height / 2 * princesa->getScaleY()) <=
+			listaPlatform[i]->getPositionY() + (listaPlatform[i]->getContentSize().height / 2 * listaPlatform[i]->getScaleY())) {			return false;		}	}	return true;}bool PlataformasScene::PlataformaEntre(Sprite* a, Sprite* b){	for (int j = 0; j < numeroP; j++)
+	{
+		if (listaPlatform[j]->getPositionX() + ((listaPlatform[j]->getContentSize().width / 2) * listaPlatform[j]->getScaleX()) > a->getPositionX() - ((a->getContentSize().width / 2)*a->getScaleX()) &&
+			listaPlatform[j]->getPositionX() - ((listaPlatform[j]->getContentSize().width / 2) * listaPlatform[j]->getScaleX()) < a->getPositionX() + ((a->getContentSize().width / 2)*a->getScaleX()) &&
+			a->getPositionY() > listaPlatform[j]->getPositionY() &&
+			b->getPositionY() < listaPlatform[j]->getPositionY())
+		{
+			return true;
+		}
+	}	return false;}Sprite* PlataformasScene::ColisionPlataformas(Sprite* a){
 	for (int i = 0; i < numeroP; i++)
 	{		if (colision(listaPlatform[i], a))			return listaPlatform[i];	}}void PlataformasScene::reiniciarNivel() {
 	auto scene = PlataformasScene::createScene(n);
@@ -543,10 +785,12 @@ bool PlataformasScene::colision(Sprite* a, Sprite* b) {
 	Director::getInstance()->replaceScene(scene);
 }void PlataformasScene::volverPuzzle() {
 	//auto scene = PuzzleEscena::createScene();
-
+	
+	//eliminarPunteros();
 	Director::getInstance()->popScene();
+
 	//Director::getInstance()->replaceScene(scene);
-}
+}void PlataformasScene::finJuego() {	auto scene = FinEscena::createScene();	Director::getInstance()->replaceScene(scene);}void PlataformasScene::eliminarPunteros() {	int a = numeroP;	int b = numeroO;	int c = numeroE;	pausa = true;	removeChild(princesa, true);	delete[] princesa;	for (int i = 0; i < FRAMESCORRER; i++)	{		delete correrPrincesaR.at(i);		delete correrPrincesaL.at(i);	}	for (int i = 0; i < 24; i++)	{		removeChild(casillas[i], true);		delete[] casillas[i];	}	delete[] casillas;	for (int i = 0; i < a; i++) 	{		removeChild(listaPlatform[i], true);		delete[] listaPlatform[i];	}	delete[] listaPlatform;	for (int i = 0; i < b; i++) 	{		removeChild(listaObj[i]->imagenobj, true);		delete[] listaObj[i];	}	delete[] listaObj;	for (int i = 0; i < c; i++) 	{		removeChild(listaEnem[i]->imagenEne, true);		delete[] listaEnem[i];	}	delete[] listaEnem;}
 
 void PlataformasScene::menuCloseCallback(Ref* pSender)
 {

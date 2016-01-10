@@ -18,7 +18,7 @@ Nivel::Nivel(int n)
 
 		for (int i = 0; i < 24; i++)
 		{
-			if (i == 0 || i == 19)
+			if (i == 0 || i == 17)
 			{
 				Casilla *cas = new Casilla(i + 1);
 				MatrizInicial[i] = cas;
@@ -39,14 +39,14 @@ Nivel::Nivel(int n)
 
 		for (int j = 0; j < 22; j++)
 		{
-			if (j < 18)
+			if (j < 16)
 			{
-				Casilla *cas = new Casilla(j + 2);
+				Casilla *cas = new Casilla(0);
 				VecCasillas[j] = cas;
 			}
 			else
 			{
-				Casilla *cas = new Casilla(j + 3);
+				Casilla *cas = new Casilla(0);
 				VecCasillas[j] = cas;
 			}
 		}
