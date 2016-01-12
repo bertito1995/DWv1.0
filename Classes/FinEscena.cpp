@@ -43,8 +43,8 @@ bool FinEscena::init()
 
 void FinEscena::menu()
 {
-	Director::getInstance()->popScene();
-	Director::getInstance()->popScene();
+	Director::getInstance()->popToRootScene();
+	
 }
 
 

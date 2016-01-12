@@ -2,6 +2,7 @@
 #include "ControlesEscena.h"
 #include "cocos2d.h"
 #include "MenuEscena.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
@@ -16,6 +17,9 @@ Scene *MenuEscena::createScene()
 bool MenuEscena::init()
 
 {
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	//if (audio->isBackgroundMusicPlaying() == true) {
+	audio->preloadBackgroundMusic("audio/Music.wav");
 
 	Size tamañoPantalla = Director::getInstance()->getVisibleSize();
 
@@ -24,11 +28,15 @@ bool MenuEscena::init()
 	addChild(menuTitulo, 1);
 		
 	Sprite *jugarBoton = Sprite::create("imagenes/gui/jugar.png");
+	jugarBoton->setScaleX(tamañoPantalla.width / jugarBoton->getContentSize().width * 0.22);
+	jugarBoton->setScaleY(tamañoPantalla.height / jugarBoton->getContentSize().height * 0.13);
 	jugarBoton->setPosition(Point((tamañoPantalla.width / 2), (tamañoPantalla.height / 2-100)));
 	addChild(jugarBoton, 1);
 
 	Sprite *controlesBoton = Sprite::create("imagenes/gui/controles.png");
-	controlesBoton->setPosition(Point((tamañoPantalla.width / 2), (tamañoPantalla.height / 4)-100));
+	controlesBoton->setScaleX(tamañoPantalla.width / controlesBoton->getContentSize().width * 0.3);
+	controlesBoton->setScaleY(tamañoPantalla.height / controlesBoton->getContentSize().height * 0.25);
+	controlesBoton->setPosition(Point((tamañoPantalla.width / 1.95), (tamañoPantalla.height / 4)-100));
 	addChild(controlesBoton, 1);
 
 	Sprite *fondo = Sprite::create("imagenes/gui/fondo.png");
@@ -57,7 +65,7 @@ void MenuEscena::jugar()
 {
 	auto scene = PuzzleEscena::createScene();
 
-	Director::getInstance()->replaceScene(scene);
+	Director::getInstance()->pushScene(scene);
 
 }
 

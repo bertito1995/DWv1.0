@@ -6,6 +6,7 @@
 
 #include "PuzzleEscena.h"
 #include "ControlesEscena.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using namespace std;

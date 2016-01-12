@@ -18,6 +18,8 @@ const float FGRAVEDAD = 300;
 
 const int FRAMESCORRER = 14;
 const float FRCORRER = 0.07f;
+const int FRAMESESCALAR = 42;
+const float FRESCALAR = 0.07f;
 const float FRMONEDA = 0.01f;
 const int FRAMESMONEDA = 60;
 const float FRFANTASMA = 0.1f;
@@ -35,8 +37,12 @@ public:
 	
 	Vector <Sprite*> correrPrincesaR;
 	Vector <Sprite*> correrPrincesaL;
+	Vector <Sprite*> escalarPrincesaR;
+	Vector <Sprite*> escalarPrincesaL;
 	Vector <Sprite*> animacionMoneda;
 	Vector <Sprite*> animacionAbeja;
+	int contAnimacionEscalar;
+	float TimerEscalar; 
 	int contAnimacionMoneda;
 	float TimerMoneda;
 	Vector <Sprite*> animacionFantasma;

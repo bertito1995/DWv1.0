@@ -30,9 +30,9 @@ bool PlataformasScene::init()
 
 	princesa = Sprite::create("imagenes/princesa/animacionCorrerR/1.png");
 	Size img = princesa->getContentSize();
-	princesa->setScaleX(tamañoPantalla.width / (6 * img.width)*0.15);
-	princesa->setScaleY(tamañoPantalla.width / (4 * img.width)*0.05);
-	//princesa->setPosition(Point(50, 250));
+	princesa->setScaleX(tamañoPantalla.width / (6 * img.width)*0.22);
+	princesa->setScaleY(tamañoPantalla.width / (4 * img.width)*0.12);
+	//princesa->setPosition(Point(50, 250))
 	princesa->setPosition(Point((tamañoPantalla.width / 6)  *   (0 + 0.5)+ (tamañoPantalla.width / 6) * -0.3, (tamañoPantalla.height / 4)  *  (0 + 0.5)+ (tamañoPantalla.width / 4) * 0.15));
 	addChild(princesa, 3);
 
@@ -60,6 +60,27 @@ bool PlataformasScene::init()
 		aux2->setScaleX(0.07f);
 		aux2->setScaleY(0.07f);
 		correrPrincesaL.pushBack(aux2);
+	}
+	//imagenes escalar princesa
+
+	escalarPrincesaR = Vector <Sprite*>();
+	escalarPrincesaL = Vector <Sprite*>();
+	for (int i = 0; i < FRAMESESCALAR; i++) {
+		string texto = "imagenes/escalar/escalarR/trepar ";
+		texto += to_string(i + 1);
+		texto = texto + ".png";
+		Sprite *aux = Sprite::create(texto);
+		aux->setScaleX(0.07f * 805/762);
+		aux->setScaleY(0.07f * 1601/1726);
+		escalarPrincesaR.pushBack(aux);
+
+		string texto2 = "imagenes/escalar/escalarL/";
+		texto2 += to_string(i + 1);
+		texto2 = texto2 + ".png";
+		Sprite *aux2 = Sprite::create(texto2);
+		aux2->setScaleX(0.07f * 805 / 762);
+		aux2->setScaleY(0.07f * 1601 / 1726);
+		escalarPrincesaL.pushBack(aux2);
 	}
 
 	//animacion moneda
@@ -136,11 +157,11 @@ bool PlataformasScene::init()
 	listaPlatform = new Sprite*[19];
 	numeroP = 19;
 
-	listaEnem = new Enemigo*[7];
-	numeroE = 7;
+	listaEnem = new Enemigo*[5];
+	numeroE = 5;
 
-	listaObj = new Objeto*[20];
-	numeroO = 20;
+	listaObj = new Objeto*[19];
+	numeroO = 19;
 
 	
 
@@ -449,19 +470,72 @@ void PlataformasScene::update(float dt){
 			prinEscaleras = false;
 			prinCae = true;
 		}
+		
+		if (colisionEscaleras(princesa) == false)
+			contAnimacionEscalar = 0;
 
 		if (prinMovArriba)
 		{
 			prinPosAnt.y = prinPos.y;
 			prinPos.y += VELOCIDADPRIN;
 			princesa->setPositionY(prinPos.y);
-
+			TimerEscalar += dt;
+			if (TimerEscalar > FRESCALAR) {
+				if (prinDerecha) {
+					contAnimacionEscalar++;
+					if (contAnimacionEscalar < FRAMESESCALAR)
+					{
+						princesa->setTexture(escalarPrincesaR.at(contAnimacionEscalar)->getTexture());
+						TimerEscalar = 0.0f;
+					}
+					else
+						contAnimacionEscalar = 0;
+				}
+				else
+				{
+					contAnimacionEscalar++;
+					if (contAnimacionEscalar < FRAMESESCALAR) {
+						princesa->setTexture(escalarPrincesaL.at(contAnimacionEscalar)->getTexture());
+						TimerEscalar = 0.0f;
+					}
+					else
+						contAnimacionEscalar = 0;
+				}
+			}
 		}
+
 		if (prinMovAbajo)
 		{
 			prinPosAnt.y = prinPos.y;
 			prinPos.y -= VELOCIDADPRIN;
 			princesa->setPositionY(prinPos.y);
+			TimerEscalar += dt;
+			if (TimerEscalar > FRESCALAR) {
+				if (prinDerecha) {
+
+					contAnimacionEscalar--;
+					if (contAnimacionEscalar > 0)
+					{
+
+						princesa->setTexture(escalarPrincesaR.at(contAnimacionEscalar)->getTexture());
+						TimerEscalar = 0.0f;
+					}
+					else
+						contAnimacionEscalar = FRAMESESCALAR-1;
+				}
+				else
+				{
+					contAnimacionEscalar--;
+					if (contAnimacionEscalar > 0)
+					{
+					
+						princesa->setTexture(escalarPrincesaL.at(contAnimacionEscalar)->getTexture());
+						TimerEscalar = 0.0f;
+					}
+					else
+						contAnimacionEscalar = FRAMESESCALAR-1;
+				}
+			}
 
 		}
 
@@ -727,6 +801,8 @@ void PlataformasScene::update(float dt){
 			princesa->setPositionX(prinPos.x);
 		else
 			prinPos.x = princesa->getPositionX();
+
+
 	}
 		
 }

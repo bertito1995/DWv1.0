@@ -318,13 +318,7 @@ Casilla::Casilla(int id) {
 	{
 		imagenCasilla = "casillas/nivel_9.png";
 
-		listaObjetos = new Objeto*[1];
-		numObj = 1;
-
-		Objeto *puente = new Objeto(7);
-		puente->posX = 0.12;
-		puente->posY = -0.38;
-		listaObjetos[0] = puente;
+	
 
 
 		listaPlataformas = new Objeto*[1];
@@ -562,18 +556,15 @@ Casilla::Casilla(int id) {
 
 		fija = true;
 
-		listaEnemigos = new Enemigo*[2];
-		numEne = 2;
+		listaEnemigos = new Enemigo*[1];
+		numEne = 1;
 
 		Enemigo *basico = new Enemigo(4);
 		basico->posX = 0.3;
 		basico->posY = 0.3;
 		listaEnemigos[0] = basico;
 
-		Enemigo *lagarto = new Enemigo(6);
-		lagarto->posX = 0.3;
-		lagarto->posY = 0;
-		listaEnemigos[1] = lagarto;
+	
 
 		listaPlataformas = new Objeto*[1];
 		numPla = 1;
@@ -664,13 +655,7 @@ Casilla::Casilla(int id) {
 	{
 		imagenCasilla = "casillas/nivel_21.png";
 
-		listaEnemigos = new Enemigo*[1];
-		numEne = 1;
-
-		Enemigo *basico = new Enemigo(3);
-		basico->posX = -0.4;
-		basico->posY = -0.3;
-		listaEnemigos[0] = basico;
+		
 
 		/*listaPlataformas = new Objeto*[1];
 		numPla = 1;

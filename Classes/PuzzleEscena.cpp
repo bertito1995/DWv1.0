@@ -3,6 +3,7 @@
 #include "Casilla.h"
 #include "cocos2d.h"
 #include "PlataformasScene.h"
+#include "SimpleAudioEngine.h"
 
 
 
@@ -37,13 +38,16 @@ bool PuzzleEscena::init()
 	cambia->setPosition(Point(tamañoPantalla.width/2 - 100, tamañoPantalla.height / 10));	reset = Sprite::create("imagenes/gui/reset.png");
 	reset->setScaleX(tamañoPantalla.width / reset->getContentSize().width * 0.15);
 	reset->setScaleY(tamañoPantalla.height / reset->getContentSize().height * 0.17);
-	reset->setPosition(Point(tamañoPantalla.width / 2 - 300, tamañoPantalla.height / 10));	addChild(reset, 2);	addChild(coloca, 2);	addChild(cambia, 2);
+	reset->setPosition(Point(tamañoPantalla.width / 2 - 300, tamañoPantalla.height / 10));	Sprite *fondo = Sprite::create("imagenes/gui/interfaz.png");
+	fondo->setScaleX(tamañoPantalla.width / fondo->getContentSize().width);
+	fondo->setScaleY(tamañoPantalla.height / fondo->getContentSize().height);
+	fondo->setPosition(Point((tamañoPantalla.width / 2), (tamañoPantalla.height / 2)));
+	addChild(fondo, 0);	addChild(reset, 2);	addChild(coloca, 2);	addChild(cambia, 2);
 
 
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
-	if (audio->isBackgroundMusicPlaying() == true)
-		audio->preloadBackgroundMusic("audio/Music.mp3");
-		audio->playBackgroundMusic("audio/Music.mp3", true);
+	audio->playBackgroundMusic("audio/Music.wav", true);
+	
 
 
 	this->scheduleUpdate();
@@ -115,6 +119,7 @@ bool PuzzleEscena::init()
 				banco = true;
 				
 				casillaSeleccionada = i;
+				reorderChild(uno->VecCasillas[i]->imagencas, 2);
 				return;
 			}
 		}
@@ -128,6 +133,7 @@ bool PuzzleEscena::init()
 				uno->MatrizJugador[i]->escalarVector(uno->MatrizJugador[i]->imagencas);
 				banco = false;
 				casillaSeleccionada = i;
+				reorderChild(uno->MatrizJugador[i]->imagencas, 2);
 				return;
 			}
 		}
@@ -192,6 +198,7 @@ bool PuzzleEscena::init()
 						
 						uno->VecCasillas[casillaSeleccionada]->escalarVector(uno->VecCasillas[casillaSeleccionada]->imagencas);
 						uno->VecCasillas[casillaSeleccionada]->imagencas->setPosition(columnaImg, filaImg);
+						reorderChild(uno->MatrizJugador[i]->imagencas, 1);
 
 						casillaSeleccionada = -1;
 					}
@@ -213,6 +220,7 @@ bool PuzzleEscena::init()
 							columnaImg = tamañoPantalla.width / 25 + (ANCHOINI)* ((float)(casillaSeleccionada - ((casillaSeleccionada / 6) * 6)) + 0.5);
 							filaImg = tamañoPantalla.height / 4 + (ALTOINI)* ((float)(casillaSeleccionada / 6) + 0.5);
 							uno->MatrizJugador[casillaSeleccionada]->imagencas->setPosition(columnaImg, filaImg);
+							reorderChild(uno->MatrizJugador[i]->imagencas, 1);
 
 							casillaSeleccionada = -1;
 						}
@@ -231,6 +239,7 @@ bool PuzzleEscena::init()
 					float filaImg = tamañoPantalla.height / 19 + (ALTOVEC)* ((float)(casillaSeleccionada / 2) + 0.5);
 					
 					uno->VecCasillas[casillaSeleccionada]->imagencas->setPosition(columnaImg, filaImg);
+					reorderChild(uno->VecCasillas[casillaSeleccionada]->imagencas, 1);
 
 					casillaSeleccionada = -1;
 				}
@@ -241,6 +250,7 @@ bool PuzzleEscena::init()
 					
 					uno->MatrizJugador[casillaSeleccionada]->escalarPuzzle(uno->MatrizJugador[casillaSeleccionada]->imagencas);
 					uno->MatrizJugador[casillaSeleccionada]->imagencas->setPosition(columnaImg, filaImg);
+					reorderChild(uno->MatrizJugador[casillaSeleccionada]->imagencas, 1);
 
 					casillaSeleccionada = -1;
 				}
@@ -254,8 +264,8 @@ bool PuzzleEscena::init()
 		if (distancia < 30 && ayuda)
 		{
 			colocar();
-			//ayuda = false;
-			ayuda = true;
+			ayuda = false;
+			//ayuda = true;
 			return;
 		}
 
